@@ -1,0 +1,436 @@
+{
+  "informasi_program": {
+    "nama_program": "Magang Jogja",
+    "website": "https://magangjogja.com/",
+    "deskripsi": "MagangJogja.com adalah platform penyalur program magang/PKL di Yogyakarta yang menyediakan berbagai posisi magang di bidang kreatif, digital, teknologi, hingga teknis, lengkap dengan tim ahli/pembimbing yang mendampingi selama program berjalan.",
+    "kontak_admin": "0895-2900-2944 (WhatsApp Admin Magang Jogja)",
+    "media_sosial": {
+      "instagram": "@magangjogja",
+      "instagram_info": "@areakerja.id"
+    },
+    "lokasi_penempatan": "Yogyakarta (Jogja)",
+    "target_peserta": [
+      "Mahasiswa aktif (magang kuliah/KKN/kerja praktik)",
+      "Siswa SMK/SMA sederajat (PKL)",
+      "Fresh graduate yang ingin menambah pengalaman kerja"
+    ],
+    "durasi_magang": {
+      "minimal_bulan": 1,
+      "maksimal_bulan": 6,
+      "keterangan": "Durasi umumnya mengikuti kebutuhan surat pengantar dari sekolah/kampus (misalnya 1, 2, 3, atau 6 bulan), bisa didiskusikan langsung dengan admin sesuai jadwal akademik peserta."
+    },
+    "sistem_kerja": {
+      "keterangan": "Sebagian besar posisi bersifat WFO (datang langsung ke lokasi/mitra kerja di Jogja), namun beberapa posisi seperti Programmer, Digital Marketing, atau Content Writer dimungkinkan WFH/hybrid tergantung kebutuhan tim, dikonfirmasikan saat proses seleksi."
+    },
+    "syarat_pendaftaran": [
+      "Mengisi form pendaftaran magang (bisa diminta ke Admin Magang Jogja)",
+      "Membawa/mengirimkan surat keterangan atau surat pengantar dari sekolah/kampus",
+      "Sudah mendapat restu/izin dari orang tua",
+      "Memiliki niat positif untuk mencari skill dan pengalaman selama magang berjalan",
+      "Siap berlatih hidup mandiri dan dewasa selama menjalani program",
+      "Mau berinteraksi dengan karyawan serta menjaga nama baik perusahaan, kampus/sekolah, dan diri sendiri"
+    ],
+    "cara_daftar": {
+      "langkah": [
+        "Hubungi Admin Magang Jogja lewat WhatsApp di 0895-2900-2944",
+        "Pilih posisi magang yang diminati sesuai minat/jurusan",
+        "Isi form pendaftaran yang diberikan admin",
+        "Kirimkan surat pengantar dari sekolah/kampus beserta CV (jika ada)",
+        "Mengikuti proses seleksi/wawancara singkat",
+        "Jika diterima, akan dijadwalkan mulai magang dan pengenalan tim/pembimbing"
+      ]
+    },
+    "fasilitas": [
+      "Pendampingan langsung dari tim ahli/pembimbing sesuai bidang",
+      "Pengalaman kerja nyata melalui proyek riil",
+      "Kesempatan upgrade skill dan portofolio",
+      "Relasi dan networking profesional baru",
+      "Sertifikat magang di akhir program",
+      "Peluang berlanjut ke jenjang karier bagi peserta berprestasi"
+    ],
+    "sertifikat": {
+      "tersedia": true,
+      "keterangan": "Sertifikat magang diberikan di akhir program sebagai bukti pengalaman kerja, dengan syarat menyelesaikan durasi magang dan penilaian dari pembimbing."
+    },
+    "biaya_pendaftaran": {
+      "berbayar": false,
+      "keterangan": "Pendaftaran program magang tidak dipungut biaya. Untuk info lebih detail dan syarat terbaru, silakan cek langsung ke admin atau website resmi."
+    },
+    "catatan": "Untuk posisi magang lain di luar daftar ini, info lowongan terbaru, serta detail lengkap masing-masing posisi, silakan cek langsung di https://magangjogja.com/ atau tanyakan ke Admin Magang Jogja.",
+    "gelombang_pendaftaran": {
+      "keterangan": "Pendaftaran umumnya dibuka rutin sepanjang tahun mengikuti kebutuhan tim/mitra dan periode akademik (semester ganjil/genap), jadi bisa daftar kapan saja. Kalau kuota untuk posisi tertentu lagi penuh, admin akan infoin estimasi gelombang/jadwal buka berikutnya."
+    },
+    "kuota_peserta": {
+      "keterangan": "Setiap posisi punya kuota terbatas tergantung kebutuhan tim di periode berjalan, jadi disarankan segera menghubungi admin begitu ada minat supaya tidak keduluan pendaftar lain."
+    },
+    "uang_saku": {
+      "tersedia": "tergantung_posisi",
+      "keterangan": "Sebagian posisi ada uang saku/insentif, sebagian lain fokus ke pengalaman dan sertifikat tanpa uang saku tetap. Nominal dan ketentuannya berbeda-beda tergantung posisi dan mitra kerja, jadi paling akurat ditanyakan langsung ke admin saat proses seleksi."
+    },
+    "domisili_luar_kota": {
+      "boleh_daftar": true,
+      "penginapan_disediakan": false,
+      "keterangan": "Peserta dari luar Jogja tetap boleh daftar, tapi program tidak menyediakan penginapan/kos secara langsung, jadi peserta perlu menyiapkan tempat tinggal sendiri selama magang di Jogja."
+    },
+    "mitra_kerja": {
+      "keterangan": "Magang Jogja bekerja sama dengan berbagai bisnis dan tim kreatif/digital di Jogja sebagai tempat penempatan magang. Nama dan jenis mitra bisa berbeda-beda tergantung posisi dan periode, detail penempatan akan diinfokan admin saat proses seleksi."
+    },
+    "peluang_lanjut_karier": {
+      "keterangan": "Peserta yang menunjukkan performa baik selama magang berpeluang direkomendasikan untuk lanjut kerja sama (freelance/part time/full time) dengan mitra terkait, meski ini tidak otomatis dan tergantung kebutuhan masing-masing mitra."
+    },
+    "evaluasi_selama_magang": {
+      "keterangan": "Selama magang, peserta akan didampingi pembimbing dan mendapat evaluasi berkala terhadap progres kerja/proyek, sebagai bahan penilaian akhir sekaligus bahan pembuatan sertifikat."
+    },
+    "jam_kerja": {
+      "keterangan": "Untuk posisi WFO, jam kerja umumnya mengikuti jam kerja mitra/tim tempat penempatan, biasanya sekitar pukul 09.00-17.00 pada hari kerja (Senin-Jumat). Jam pasti bisa berbeda tiap mitra dan akan diinfokan saat penempatan."
+    },
+    "aturan_presensi_izin": {
+      "keterangan": "Peserta wajib mengisi presensi/absen sesuai ketentuan tim tempat penempatan. Kalau sakit atau ada keperluan mendesak, peserta wajib izin ke pembimbing/admin sebelum jam kerja dimulai, disertai keterangan yang jelas (misalnya surat sakit jika diperlukan)."
+    },
+    "dress_code": {
+      "keterangan": "Dress code menyesuaikan kebijakan masing-masing mitra/posisi, umumnya rapi dan sopan (casual formal / smart casual). Untuk posisi lapangan seperti Las, mengikuti standar pakaian kerja dan keselamatan yang berlaku."
+    },
+    "kebijakan_resign_ditengah_jalan": {
+      "keterangan": "Peserta yang ingin mengundurkan diri sebelum masa magang selesai diharapkan menyampaikan pemberitahuan lebih awal ke admin/pembimbing (idealnya minimal beberapa hari sebelumnya) agar tidak mengganggu pekerjaan tim, dan menjaga hubungan baik dengan kampus/sekolah maupun mitra."
+    },
+    "kebijakan_daftar_ulang": {
+      "keterangan": "Peserta yang belum lolos seleksi sebelumnya diperbolehkan mendaftar ulang di kesempatan berikutnya, baik untuk posisi yang sama maupun posisi lain, selama kuota masih tersedia."
+    },
+    "usia_minimal": {
+      "keterangan": "Tidak ada batas usia yang kaku, mengikuti status peserta sebagai siswa SMK/SMA, mahasiswa aktif, atau fresh graduate. Untuk siswa SMK/SMA, biasanya program PKL mengikuti ketentuan usia dan jenjang sesuai sekolah masing-masing."
+    },
+    "berkas_pendaftaran": {
+      "keterangan": "Selain surat keterangan/pengantar dari sekolah/kampus, biasanya juga diminta CV singkat, pas foto terbaru, dan fotokopi/scan identitas (KTP/KTM/Kartu Pelajar). Kelengkapan detail bisa berbeda tergantung posisi, akan diinfokan admin saat proses pendaftaran."
+    },
+    "daftar_berkelompok": {
+      "keterangan": "Pendaftaran secara berkelompok (misalnya untuk kebutuhan magang/KKN satu kampus) dimungkinkan, tapi tetap perlu dikoordinasikan dan dikonfirmasikan ke admin agar penempatan dan kuota bisa diatur dengan baik."
+    },
+    "estimasi_proses_seleksi": {
+      "keterangan": "Proses seleksi setelah mengirim berkas biasanya berlangsung dalam beberapa hari kerja hingga sekitar satu minggu, tergantung kebutuhan dan jadwal masing-masing tim/mitra. Admin akan menginformasikan hasil dan jadwal mulai magang setelah proses selesai."
+    },
+    "alat_kerja": {
+      "keterangan": "Untuk sebagian besar posisi (misalnya Programmer, Desain Grafis, Content Writer, Digital Marketing), peserta disarankan membawa laptop/perangkat sendiri karena belum semua mitra menyediakan unit kerja. Untuk peralatan khusus (misalnya kamera profesional atau mesin las), disesuaikan dengan ketersediaan di lokasi mitra dan akan dikonfirmasikan saat penempatan."
+    },
+    "keselamatan_kerja_las": {
+      "keterangan": "Untuk posisi Las, alat pelindung diri (APD) dasar seperti kacamata las, sarung tangan, dan apron biasanya disediakan atau diarahkan oleh mitra tempat penempatan demi keselamatan kerja, namun peserta tetap dianjurkan mengonfirmasi kelengkapan APD sebelum mulai bekerja."
+    },
+    "training_onboarding": {
+      "keterangan": "Sebelum mulai mengerjakan tugas, peserta biasanya akan mendapat pengenalan singkat (onboarding) dari pembimbing terkait tim, alur kerja, dan tools yang digunakan, sebelum benar-benar terjun mengerjakan proyek."
+    },
+    "email_resmi": {
+      "keterangan": "Untuk saat ini, kontak resmi yang aktif digunakan untuk komunikasi adalah WhatsApp Admin dan Instagram @magangjogja. Jika ada kebutuhan komunikasi formal lewat email, bisa ditanyakan langsung ke admin."
+    },
+    "alamat_kantor": {
+      "keterangan": "Untuk alamat kantor/sekretariat atau lokasi penempatan yang bisa didatangi langsung, silakan konfirmasi ke Admin Magang Jogja karena penempatan bisa berbeda-beda tergantung posisi dan mitra kerja."
+    },
+    "bimbingan_laporan_magang": {
+      "keterangan": "Pembimbing di lokasi magang dapat membantu memberi masukan terkait kegiatan/proyek yang dikerjakan sebagai bahan laporan magang atau tugas akhir, namun penyusunan laporan tetap menjadi tanggung jawab peserta sesuai format dari sekolah/kampus masing-masing."
+    }
+  },
+  "posisi_magang": [
+    {
+      "nama_posisi": "Administrasi",
+      "deskripsi": "Mendukung kelancaran operasional kantor dan administrasi tim.",
+      "jobdesk": [
+        "Mengelola dan merapikan data serta dokumen administrasi",
+        "Membantu input data menggunakan Ms. Office (Excel & Word)",
+        "Membuat dan mengarsipkan surat-menyurat",
+        "Membantu koordinasi jadwal dan kebutuhan operasional tim",
+        "Melayani komunikasi internal maupun dengan mitra/vendor"
+      ],
+      "skill_dibutuhkan": [
+        "Teliti dan rapi dalam mengelola data",
+        "Bisa mengoperasikan Ms. Office (Excel & Word)",
+        "Komunikatif dan disiplin waktu"
+      ]
+    },
+    {
+      "nama_posisi": "Programmer",
+      "deskripsi": "Mengembangkan dan memelihara aplikasi/website, baik sisi Front End maupun Back End.",
+      "jobdesk": [
+        "Membangun dan mengembangkan fitur website/aplikasi (Front End/Back End)",
+        "Melakukan debugging dan perbaikan bug pada sistem",
+        "Berkolaborasi dengan tim UI/UX untuk implementasi desain ke kode",
+        "Melakukan pengujian (testing) fitur sebelum rilis",
+        "Menulis dokumentasi teknis sederhana untuk kode yang dibuat"
+      ],
+      "skill_dibutuhkan": [
+        "Paham dasar bahasa pemrograman (HTML/CSS/JS, PHP, Python, atau lainnya)",
+        "Mau belajar hal baru dan terbiasa googling/debugging",
+        "Bisa kerja sama dalam tim (kolaborasi dengan UI/UX)"
+      ]
+    },
+    {
+      "nama_posisi": "UI/UX Designer",
+      "deskripsi": "Merancang tampilan dan pengalaman pengguna aplikasi/website agar mudah dan nyaman digunakan.",
+      "jobdesk": [
+        "Membuat wireframe dan mockup desain aplikasi/website",
+        "Merancang alur pengguna (user flow) yang intuitif",
+        "Melakukan riset kebutuhan dan kebiasaan pengguna",
+        "Membuat desain UI menggunakan tools seperti Figma",
+        "Berkolaborasi dengan tim Programmer untuk implementasi desain"
+      ],
+      "skill_dibutuhkan": [
+        "Bisa menggunakan tools desain seperti Figma/XD",
+        "Punya rasa estetika dan logika alur pengguna yang baik",
+        "Terbuka menerima revisi dan masukan"
+      ]
+    },
+    {
+      "nama_posisi": "Human Resource",
+      "deskripsi": "Mendukung proses pengelolaan sumber daya manusia di tim/perusahaan.",
+      "jobdesk": [
+        "Membantu proses rekrutmen dan seleksi kandidat magang/karyawan",
+        "Mengelola data karyawan/peserta magang",
+        "Membantu penjadwalan onboarding dan orientasi peserta baru",
+        "Membantu menyiapkan dokumen kepegawaian",
+        "Mendukung kegiatan pengembangan tim (training, evaluasi kinerja)"
+      ],
+      "skill_dibutuhkan": [
+        "Komunikatif dan mudah bergaul",
+        "Teliti dalam mengelola data peserta/karyawan",
+        "Punya inisiatif dalam mengatur jadwal dan koordinasi"
+      ]
+    },
+    {
+      "nama_posisi": "Social Media Specialist",
+      "deskripsi": "Mengelola akun media sosial perusahaan agar aktif dan menarik audiens.",
+      "jobdesk": [
+        "Membuat dan menjadwalkan konten untuk akun media sosial",
+        "Menyusun caption dan strategi konten harian/mingguan",
+        "Memantau interaksi (komentar, DM) dan menjaga engagement",
+        "Menganalisis performa konten (insight/analytics)",
+        "Mengikuti tren media sosial yang relevan dengan brand"
+      ],
+      "skill_dibutuhkan": [
+        "Update dengan tren media sosial",
+        "Bisa menulis caption yang menarik",
+        "Familiar dengan Instagram, TikTok, atau platform lain"
+      ]
+    },
+    {
+      "nama_posisi": "Photographer / Videographer",
+      "deskripsi": "Menghasilkan dokumentasi foto dan video untuk kebutuhan konten maupun promosi.",
+      "jobdesk": [
+        "Melakukan pemotretan produk, acara, atau konten promosi",
+        "Mengambil video untuk kebutuhan sosial media/iklan",
+        "Melakukan editing foto dan video dasar",
+        "Menyiapkan peralatan dan setting lokasi pengambilan gambar",
+        "Berkoordinasi dengan tim kreatif terkait konsep visual"
+      ],
+      "skill_dibutuhkan": [
+        "Bisa mengoperasikan kamera/HP untuk foto-video",
+        "Paham dasar komposisi dan pencahayaan",
+        "Bisa edit foto/video dasar (Lightroom, CapCut, Premiere, dll)"
+      ]
+    },
+    {
+      "nama_posisi": "Content Writer",
+      "deskripsi": "Menulis konten teks untuk berbagai kebutuhan promosi dan informasi perusahaan.",
+      "jobdesk": [
+        "Menulis artikel, caption, dan copy untuk media sosial/website",
+        "Melakukan riset topik dan kata kunci relevan",
+        "Menyesuaikan gaya tulisan dengan tone brand",
+        "Melakukan proofread dan revisi konten sebelum publish",
+        "Berkoordinasi dengan tim desain/sosmed untuk penyelarasan konten"
+      ],
+      "skill_dibutuhkan": [
+        "Suka menulis dan punya kosakata yang luas",
+        "Bisa riset topik dengan cepat",
+        "Teliti dalam ejaan dan tata bahasa"
+      ]
+    },
+    {
+      "nama_posisi": "Marketing Sales",
+      "deskripsi": "Mendukung kegiatan pemasaran dan penjualan produk/jasa perusahaan.",
+      "jobdesk": [
+        "Melakukan follow up dan komunikasi dengan calon pelanggan/mitra",
+        "Membantu menjelaskan produk/layanan kepada calon konsumen",
+        "Mendukung strategi promosi dan penawaran",
+        "Mencatat dan melaporkan hasil penjualan/prospek",
+        "Membangun relasi dengan pelanggan/mitra baru"
+      ],
+      "skill_dibutuhkan": [
+        "Komunikatif dan percaya diri",
+        "Suka berinteraksi dan menjalin relasi baru",
+        "Punya semangat mencapai target"
+      ]
+    },
+    {
+      "nama_posisi": "Desain Grafis",
+      "deskripsi": "Membuat materi visual untuk kebutuhan promosi dan branding perusahaan.",
+      "jobdesk": [
+        "Mendesain feed, poster, dan banner promosi",
+        "Membuat materi visual untuk sosial media dan website",
+        "Menjaga konsistensi identitas visual (brand guideline)",
+        "Mengolah foto/ilustrasi menjadi materi siap pakai",
+        "Berkoordinasi dengan tim konten dan pemasaran"
+      ],
+      "skill_dibutuhkan": [
+        "Bisa menggunakan software desain (Canva, CorelDraw, Photoshop, Illustrator)",
+        "Punya rasa estetika visual yang baik",
+        "Terbuka menerima revisi desain"
+      ]
+    },
+    {
+      "nama_posisi": "Digital Marketing",
+      "deskripsi": "Menjalankan strategi pemasaran digital untuk meningkatkan penjualan dan brand awareness.",
+      "jobdesk": [
+        "Membantu menyusun dan menjalankan strategi pemasaran online",
+        "Mengelola iklan digital (ads) di media sosial/mesin pencari",
+        "Melakukan riset target audiens dan kompetitor",
+        "Menganalisis performa campaign digital",
+        "Mengoptimasi konten agar sesuai kebutuhan SEO/algoritma platform"
+      ],
+      "skill_dibutuhkan": [
+        "Paham dasar digital marketing/social media ads",
+        "Suka menganalisis data dan tren",
+        "Mau belajar tools baru (Meta Ads, Google Ads, dll)"
+      ]
+    },
+    {
+      "nama_posisi": "Marcomm / Public Relation",
+      "deskripsi": "Mengelola komunikasi pemasaran dan hubungan perusahaan dengan publik/media.",
+      "jobdesk": [
+        "Menyusun materi komunikasi dan press release",
+        "Menjaga citra dan reputasi brand di mata publik",
+        "Membantu koordinasi kegiatan promosi/event perusahaan",
+        "Membangun relasi dengan media atau partner eksternal",
+        "Memantau opini publik terkait brand"
+      ],
+      "skill_dibutuhkan": [
+        "Komunikatif dan pandai menulis pesan formal",
+        "Bisa menjaga hubungan baik dengan berbagai pihak",
+        "Teliti menjaga citra brand"
+      ]
+    },
+    {
+      "nama_posisi": "Host / Presenter",
+      "deskripsi": "Membawakan acara, siaran, atau konten live/promosi perusahaan.",
+      "jobdesk": [
+        "Membawakan acara atau live streaming produk/brand",
+        "Menyampaikan informasi produk secara menarik dan komunikatif",
+        "Berinteraksi dengan audiens/penonton selama siaran",
+        "Berkoordinasi dengan tim produksi terkait rundown acara",
+        "Menjaga citra positif brand saat tampil di depan publik"
+      ],
+      "skill_dibutuhkan": [
+        "Percaya diri tampil di depan kamera/publik",
+        "Komunikatif dan artikulasi jelas",
+        "Enerjik dan mudah berinteraksi dengan audiens"
+      ]
+    },
+    {
+      "nama_posisi": "TikTok Creator",
+      "deskripsi": "Membuat konten kreatif berbasis video pendek untuk platform TikTok.",
+      "jobdesk": [
+        "Membuat ide dan konsep konten video pendek",
+        "Melakukan syuting dan editing video TikTok",
+        "Mengikuti tren dan challenge yang relevan dengan brand",
+        "Menganalisis performa konten untuk optimasi berikutnya",
+        "Berkolaborasi dengan tim sosial media dan desain"
+      ],
+      "skill_dibutuhkan": [
+        "Kreatif membuat ide konten pendek",
+        "Update dengan tren TikTok",
+        "Bisa syuting dan edit video sederhana"
+      ]
+    },
+    {
+      "nama_posisi": "Voice Over Talent",
+      "deskripsi": "Mengisi suara untuk kebutuhan konten audio/video perusahaan.",
+      "jobdesk": [
+        "Mengisi suara (voice over) untuk video promosi/iklan",
+        "Menyesuaikan intonasi dan gaya bicara sesuai naskah/brief",
+        "Melakukan rekaman audio dengan kualitas jelas",
+        "Berkoordinasi dengan tim video/editor terkait durasi dan penempatan suara",
+        "Merevisi hasil rekaman sesuai catatan tim kreatif"
+      ],
+      "skill_dibutuhkan": [
+        "Punya suara jelas dan intonasi yang enak didengar",
+        "Bisa membaca naskah dengan natural",
+        "Disiplin dalam proses rekaman"
+      ]
+    },
+    {
+      "nama_posisi": "Content Planner",
+      "deskripsi": "Merancang dan menyusun perencanaan konten agar terstruktur dan konsisten.",
+      "jobdesk": [
+        "Menyusun kalender/rencana konten mingguan atau bulanan",
+        "Menentukan tema dan jenis konten untuk tiap platform",
+        "Berkoordinasi dengan Content Writer, Desain Grafis, dan tim video",
+        "Memantau progres produksi konten agar sesuai jadwal",
+        "Mengevaluasi performa konten untuk perencanaan berikutnya"
+      ],
+      "skill_dibutuhkan": [
+        "Terorganisir dan suka menyusun rencana/jadwal",
+        "Bisa berkoordinasi dengan banyak tim sekaligus",
+        "Paham alur produksi konten"
+      ]
+    },
+    {
+      "nama_posisi": "Project Manager",
+      "deskripsi": "Mengoordinasikan jalannya proyek agar selesai tepat waktu dan sesuai target.",
+      "jobdesk": [
+        "Menyusun timeline dan pembagian tugas tim proyek",
+        "Memantau progres pekerjaan setiap anggota tim",
+        "Menjadi penghubung komunikasi antar divisi dalam proyek",
+        "Mengidentifikasi kendala dan mencari solusi selama proyek berjalan",
+        "Melaporkan perkembangan proyek kepada atasan/klien"
+      ],
+      "skill_dibutuhkan": [
+        "Terbiasa mengatur banyak pekerjaan sekaligus (multitasking)",
+        "Komunikatif dan tegas dalam koordinasi tim",
+        "Bisa problem solving saat ada kendala proyek"
+      ]
+    },
+    {
+      "nama_posisi": "Las",
+      "deskripsi": "Melakukan pekerjaan pengelasan untuk kebutuhan produksi atau konstruksi.",
+      "jobdesk": [
+        "Melakukan proses pengelasan sesuai spesifikasi dan gambar kerja",
+        "Memastikan hasil las rapi, kuat, dan sesuai standar keselamatan",
+        "Merawat dan menyiapkan peralatan las sebelum dan sesudah digunakan",
+        "Mematuhi prosedur keselamatan kerja (K3) selama proses pengelasan",
+        "Berkoordinasi dengan tim produksi/konstruksi terkait target pekerjaan"
+      ],
+      "skill_dibutuhkan": [
+        "Paham dasar teknik pengelasan (atau mau dilatih dari dasar)",
+        "Teliti dan mengutamakan keselamatan kerja (K3)",
+        "Fisik yang mendukung pekerjaan lapangan"
+      ]
+    },
+    {
+      "nama_posisi": "Animasi",
+      "deskripsi": "Membuat konten animasi untuk kebutuhan promosi, edukasi, maupun hiburan.",
+      "jobdesk": [
+        "Membuat storyboard dan konsep animasi",
+        "Mengerjakan proses animasi 2D/3D sesuai kebutuhan proyek",
+        "Menyesuaikan animasi dengan naskah, musik, atau voice over",
+        "Melakukan rendering dan finalisasi hasil animasi",
+        "Berkoordinasi dengan tim kreatif terkait konsep visual"
+      ],
+      "skill_dibutuhkan": [
+        "Bisa menggunakan software animasi (After Effects, Blender, dll)",
+        "Punya kreativitas visual dan storytelling",
+        "Terbuka menerima revisi hasil animasi"
+      ]
+    },
+    {
+      "nama_posisi": "Machine Learning",
+      "deskripsi": "Mengembangkan model dan sistem berbasis machine learning untuk kebutuhan proyek.",
+      "jobdesk": [
+        "Melakukan pengumpulan dan pembersihan data (data preprocessing)",
+        "Membangun dan melatih model machine learning sesuai kebutuhan proyek",
+        "Melakukan evaluasi dan tuning performa model",
+        "Mengimplementasikan model ke dalam sistem/aplikasi",
+        "Mendokumentasikan proses dan hasil eksperimen model"
+      ],
+      "skill_dibutuhkan": [
+        "Paham dasar Python dan library ML (pandas, scikit-learn, dll)",
+        "Familiar dengan konsep statistik/data",
+        "Mau belajar dan eksperimen model baru"
+      ]
+    }
+  ]
+}
