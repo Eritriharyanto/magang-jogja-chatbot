@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fredoka", ui-rounded, system-ui, sans-serif;
+  --font-body: "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  /* magangjogja brand palette */
+  --color-mj-green: oklch(0.766 0.134 161.5);
+  --color-mj-green-dark: oklch(0.735 0.135 161.5);
+  --color-mj-green-deep: oklch(0.55 0.11 161.5);
+  --color-mj-yellow: oklch(0.839 0.135 82);
+  --color-mj-red: oklch(0.653 0.117 19);
+  --color-mj-blue: oklch(0.632 0.06 275);
+  --color-mj-purple: oklch(0.653 0.101 310);
+  --color-mj-orange: oklch(0.782 0.152 68);
+  --color-mj-ink: oklch(0.34 0.045 40);
+  --color-mj-pink: oklch(0.57 0.2 355);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-body);
+  }
+}
+
+@utility mj-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+@utility mj-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+/* ---- Animations ---- */
+
+@keyframes mj-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+@keyframes mj-badge-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+@keyframes mj-bounce-in {
+  0% { transform: scale(0.85); opacity: 0; }
+  60% { transform: scale(1.03); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@utility animate-mj-float {
+  animation: mj-float 4s ease-in-out infinite;
+}
+
+@utility animate-mj-float-slow {
+  animation: mj-float 5.5s ease-in-out infinite;
+}
+
+@utility animate-mj-badge-pulse {
+  animation: mj-badge-pulse 2.4s ease-in-out infinite;
+}
+
+@utility animate-mj-bounce-in {
+  animation: mj-bounce-in 0.5s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-mj-float,
+  .animate-mj-float-slow,
+  .animate-mj-badge-pulse,
+  .animate-mj-bounce-in {
+    animation: none;
+  }
+}
