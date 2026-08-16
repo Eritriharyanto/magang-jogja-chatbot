@@ -8,6 +8,7 @@ import Syarat from "@/components/Syarat";
 import Posisi from "@/components/Posisi";
 import Fasilitas from "@/components/Fasilitas";
 import Footer from "@/components/Footer";
+import ChatWidget from "@/components/ChatWidget";
 
 function App() {
   return (
@@ -50,6 +51,8 @@ function App() {
         height={249}
         className='animate-mj-badge-pulse fixed bottom-6 right-6 z-50 w-32 md:w-56'
       />
+
+      <ChatWidget />
     </div>
   );
 }

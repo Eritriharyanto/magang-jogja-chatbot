@@ -1,21 +1,57 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { POSISI } from "@/data/content";
+import { getDivisiBySlug } from "@/lib/api";
+import { iconForSlug } from "@/data/posisiIcons";
+import { POSISI as POSISI_FALLBACK } from "@/data/content";
 
 function PosisiDetail() {
   const { slug } = useParams();
-  const posisi = POSISI.find((p) => p.slug === slug);
+  const fallback = POSISI_FALLBACK.find((p) => p.slug === slug) || null;
+  const [posisi, setPosisi] = useState(fallback);
+  const [notFound, setNotFound] = useState(false);
+  const [loading, setLoading] = useState(!fallback);
 
   // Selalu mulai dari atas halaman saat pindah ke halaman detail.
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
 
-  // Kalau slug di URL tidak cocok dengan divisi manapun, lempar balik ke beranda.
-  if (!posisi) {
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(!fallback);
+    getDivisiBySlug(slug)
+      .then((data) => {
+        if (!cancelled) {
+          setPosisi(data);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setLoading(false);
+        // gak ketemu di backend maupun fallback statis -> baru dianggap 404
+        if (!fallback) setNotFound(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug]);
+
+  if (notFound) {
     return <Navigate to="/" replace />;
+  }
+
+  if (loading || !posisi) {
+    return (
+      <div className="overflow-x-hidden bg-mj-green font-body">
+        <Header />
+        <section className="bg-mj-yellow py-24 text-center text-white">Memuat...</section>
+        <Footer />
+      </div>
+    );
   }
 
   return (
@@ -32,7 +68,12 @@ function PosisiDetail() {
           </Link>
 
           <div className="mx-auto flex h-28 items-center justify-center">
-            <img src={posisi.icon} alt="" aria-hidden="true" className="size-24 object-contain" />
+            <img
+              src={posisi.icon || iconForSlug(posisi.slug)}
+              alt=""
+              aria-hidden="true"
+              className="size-24 object-contain"
+            />
           </div>
 
           <h1 className="mj-display mt-4 text-2xl leading-tight text-white md:text-3xl">
