@@ -1,8 +1,26 @@
+import { useEffect, useState } from "react";
 import Bar from "@/components/Bar";
 import Reveal from "@/components/Reveal";
-import { SYARAT } from "@/data/content";
+import { getSyarat } from "@/lib/api";
+import { SYARAT as SYARAT_FALLBACK } from "@/data/content";
 
 function Syarat() {
+  const [syarat, setSyarat] = useState(SYARAT_FALLBACK.map((isi) => ({ isi })));
+
+  useEffect(() => {
+    let cancelled = false;
+    getSyarat()
+      .then((data) => {
+        if (!cancelled && Array.isArray(data) && data.length > 0) setSyarat(data);
+      })
+      .catch(() => {
+        // biarkan fallback statis tampil kalau backend belum jalan
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <>
       <section id="syarat" className="bg-mj-yellow py-6">
@@ -15,14 +33,14 @@ function Syarat() {
 
       <section className="bg-mj-green py-16">
         <div className="mx-auto grid max-w-[1200px] gap-x-8 gap-y-16 px-5 md:grid-cols-3">
-          {SYARAT.map((s, i) => (
+          {syarat.map((s, i) => (
             <Reveal
-              key={s}
+              key={s.id ?? s.isi}
               delay={i * 100}
               className="flex flex-col items-center justify-end text-center"
             >
               <p className="max-w-xs whitespace-pre-line text-[0.95rem] leading-relaxed text-white">
-                {s}
+                {s.isi}
               </p>
             </Reveal>
           ))}
