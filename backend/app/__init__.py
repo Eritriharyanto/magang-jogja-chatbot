@@ -1,4 +1,6 @@
-from flask import Flask
+from pathlib import Path
+
+from flask import Flask, send_from_directory
 from flask_cors import CORS
 
 from .config import Config
@@ -14,6 +16,8 @@ def create_app():
     CORS(app, supports_credentials=True, origins=[app.config["CORS_ORIGIN"]])
 
     db.init_app(app)
+
+    Path(app.config["ICON_UPLOAD_DIR"]).mkdir(parents=True, exist_ok=True)
 
     with app.app_context():
         from . import models  # noqa: F401  (wajib di-import supaya create_all() tahu tabelnya)
@@ -33,5 +37,10 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(public_bp)
     app.register_blueprint(admin_bp)
+
+    @app.get("/uploads/<path:filename>")
+    def serve_upload(filename):
+        """Nyajiin file yang diupload admin (mis. icon posisi magang)."""
+        return send_from_directory(app.config["UPLOAD_ROOT"], filename)
 
     return app

@@ -8,6 +8,10 @@ KB_PATH = DATA_DIR / "knowledge_base.json"
 INTENTS_PATH = DATA_DIR / "intents.json"
 ADMIN_CONFIG_PATH = DATA_DIR / "admin_config.json"
 
+UPLOAD_ROOT = DATA_DIR / "uploads"
+ICON_UPLOAD_DIR = UPLOAD_ROOT / "icons"
+ALLOWED_ICON_EXTENSIONS = {"png", "jpg", "jpeg", "svg", "webp"}
+
 
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-ganti-ini")
@@ -16,6 +20,11 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     CHAT_HISTORY_DB_PATH = str(DATA_DIR / "chat_history.db")
+
+    UPLOAD_ROOT = str(UPLOAD_ROOT)
+    ICON_UPLOAD_DIR = str(ICON_UPLOAD_DIR)
+    ALLOWED_ICON_EXTENSIONS = ALLOWED_ICON_EXTENSIONS
+    MAX_CONTENT_LENGTH = 5 * 1024 * 1024  # 5MB, batas ukuran upload icon
 
     OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
     OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen2.5:0.5b")

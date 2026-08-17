@@ -7,9 +7,11 @@ import ScrollToHash from "./components/ScrollToHash.jsx";
 import { AdminAuthProvider } from "./admin/AdminAuthContext.jsx";
 import RequireAdmin from "./admin/RequireAdmin.jsx";
 import AdminLogin from "./admin/pages/Login.jsx";
+import DashboardPage from "./admin/pages/DashboardPage.jsx";
 import DivisiPage from "./admin/pages/DivisiPage.jsx";
 import SyaratPage from "./admin/pages/SyaratPage.jsx";
 import FasilitasPage from "./admin/pages/FasilitasPage.jsx";
+import KnowledgePage from "./admin/pages/KnowledgePage.jsx";
 import IntentsPage from "./admin/pages/IntentsPage.jsx";
 import RiwayatPage from "./admin/pages/RiwayatPage.jsx";
 import PengaturanPage from "./admin/pages/PengaturanPage.jsx";
@@ -25,6 +27,14 @@ createRoot(document.getElementById("root")).render(
           <Route path="/posisi/:slug" element={<PosisiDetail />} />
 
           <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin"
+            element={
+              <RequireAdmin>
+                <DashboardPage />
+              </RequireAdmin>
+            }
+          />
           <Route
             path="/admin/divisi"
             element={
@@ -46,6 +56,14 @@ createRoot(document.getElementById("root")).render(
             element={
               <RequireAdmin>
                 <FasilitasPage />
+              </RequireAdmin>
+            }
+          />
+          <Route
+            path="/admin/knowledge"
+            element={
+              <RequireAdmin>
+                <KnowledgePage />
               </RequireAdmin>
             }
           />

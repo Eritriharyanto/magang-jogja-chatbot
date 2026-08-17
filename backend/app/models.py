@@ -47,6 +47,7 @@ class Divisi(db.Model):
             "label": self.label,
             "sub": self.sub,
             "icon": f"/uploads/icons/{self.icon_filename}" if self.icon_filename else None,
+            "icon_filename": self.icon_filename,
             "deskripsi": self.deskripsi,
             "jobdesk": self.jobdesk(),
             "skill_dibutuhkan": self.skill(),

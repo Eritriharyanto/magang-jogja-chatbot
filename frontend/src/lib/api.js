@@ -36,6 +36,17 @@ export function getFasilitas() {
   return apiFetch("/api/fasilitas");
 }
 
+export function getVisitorStatus() {
+  return apiFetch("/api/visitor");
+}
+
+export function registerVisitor(nama, noTelepon) {
+  return apiFetch("/api/visitor", {
+    method: "POST",
+    body: JSON.stringify({ nama, no_telepon: noTelepon }),
+  });
+}
+
 export function sendChatMessage(pesan) {
   return apiFetch("/api/chat", {
     method: "POST",
