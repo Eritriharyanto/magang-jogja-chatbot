@@ -11,7 +11,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
 
   if (!checking && isAuthed) {
-    return <Navigate to="/admin/divisi" replace />;
+    return <Navigate to="/admin" replace />;
   }
 
   async function handleSubmit(e) {
@@ -20,7 +20,7 @@ function Login() {
     setLoading(true);
     try {
       await login(username, password);
-      navigate("/admin/divisi", { replace: true });
+      navigate("/admin", { replace: true });
     } catch (err) {
       setError(err.message || "Login gagal");
     } finally {

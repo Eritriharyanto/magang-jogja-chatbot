@@ -26,6 +26,29 @@ export const login = (username, password) =>
 export const logout = () => adminFetch("/api/admin/logout", { method: "POST" });
 export const me = () => adminFetch("/api/admin/me");
 
+// --- Upload icon posisi ---
+export async function uploadIcon(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  const res = await fetch(`${API_BASE}/api/admin/upload/icon`, {
+    method: "POST",
+    credentials: "include",
+    body: formData,
+  });
+  let body = null;
+  try {
+    body = await res.json();
+  } catch {
+    // respons kosong, biarkan body null
+  }
+  if (!res.ok) {
+    const err = new Error(body?.error || `Upload gagal (${res.status})`);
+    err.status = res.status;
+    throw err;
+  }
+  return body;
+}
+
 // --- Divisi (posisi magang) ---
 export const listDivisi = () => adminFetch("/api/admin/divisi");
 export const createDivisi = (data) =>
@@ -58,6 +81,21 @@ export const deleteIntent = (nama) =>
 // --- Riwayat chat ---
 export const listRiwayat = () => adminFetch("/api/admin/riwayat");
 export const getTranscript = (visitorId) => adminFetch(`/api/admin/riwayat/${visitorId}`);
+
+// --- Knowledge base (isi pengetahuan chatbot AI) ---
+export const getKnowledge = () => adminFetch("/api/admin/knowledge");
+export const updateInformasiProgram = (data) =>
+  adminFetch("/api/admin/knowledge/informasi-program", { method: "PUT", body: JSON.stringify(data) });
+export const listPosisiKnowledge = () => adminFetch("/api/admin/knowledge/posisi");
+export const createPosisiKnowledge = (data) =>
+  adminFetch("/api/admin/knowledge/posisi", { method: "POST", body: JSON.stringify(data) });
+export const updatePosisiKnowledge = (namaPosisi, data) =>
+  adminFetch(`/api/admin/knowledge/posisi/${encodeURIComponent(namaPosisi)}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+export const deletePosisiKnowledge = (namaPosisi) =>
+  adminFetch(`/api/admin/knowledge/posisi/${encodeURIComponent(namaPosisi)}`, { method: "DELETE" });
 
 // --- Pengaturan ---
 export const updatePassword = (passwordLama, passwordBaru) =>

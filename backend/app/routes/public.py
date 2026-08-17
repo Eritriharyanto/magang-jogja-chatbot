@@ -43,17 +43,54 @@ def list_fasilitas():
     return jsonify([r.to_dict() for r in rows])
 
 
+@bp.get("/visitor")
+def visitor_status():
+    """Dicek frontend pas ChatWidget dibuka, buat tau perlu nampilin form
+    nama+WA atau langsung ke chat (kalau sesi ini udah pernah isi)."""
+    nama = session.get("visitor_nama")
+    return jsonify({"registered": bool(nama), "nama": nama})
+
+
+@bp.post("/visitor")
+def register_visitor():
+    """Gerbang identitas: wajib isi nama + no. WhatsApp sebelum bisa chat."""
+    data = request.get_json(force=True) or {}
+    nama = (data.get("nama") or "").strip()
+    no_telepon = (data.get("no_telepon") or "").strip()
+
+    if not nama or not no_telepon:
+        return jsonify({"error": "Nama dan nomor WhatsApp wajib diisi"}), 400
+    if len(nama) > 100:
+        return jsonify({"error": "Nama terlalu panjang"}), 400
+
+    if "session_id" not in session:
+        session["session_id"] = str(uuid.uuid4())
+    db_chat.upsert_visitor(session["session_id"], nama=nama, no_telepon=no_telepon)
+    session["visitor_nama"] = nama
+
+    return jsonify({"ok": True, "nama": nama})
+
+
 @bp.post("/chat")
 def chat():
     """Alur: identitas session -> coba static intent -> kalau gak yakin,
     fallback ke Ollama pakai system prompt hasil ringkasan knowledge base."""
+    if not session.get("visitor_nama"):
+        return (
+            jsonify(
+                {
+                    "error": "Silakan isi nama dan nomor WhatsApp dulu sebelum chat.",
+                    "code": "IDENTITY_REQUIRED",
+                }
+            ),
+            400,
+        )
+
     data = request.get_json(force=True) or {}
     pesan = (data.get("pesan") or "").strip()
     if not pesan:
         return jsonify({"error": "Pesan kosong"}), 400
 
-    # Gerbang identitas ringan pakai session id (kalau mau gerbang nama+WA
-    # penuh seperti referensi, tambahkan endpoint /api/visitor di sini).
     if "session_id" not in session:
         session["session_id"] = str(uuid.uuid4())
     visitor_id = db_chat.upsert_visitor(session["session_id"])

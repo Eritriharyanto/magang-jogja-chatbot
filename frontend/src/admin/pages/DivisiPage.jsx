@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AdminLayout from "@/admin/AdminLayout";
 import ListFieldEditor from "@/admin/components/ListFieldEditor";
 import * as adminApi from "@/lib/adminApi";
+import { API_BASE } from "@/lib/api";
 
 const EMPTY_FORM = {
   id: null,
@@ -14,6 +15,8 @@ const EMPTY_FORM = {
   gformLink: "",
   urutan: 0,
   aktif: true,
+  icon_filename: null,
+  iconPreview: null,
 };
 
 function DivisiPage() {
@@ -22,6 +25,7 @@ function DivisiPage() {
   const [error, setError] = useState("");
   const [form, setForm] = useState(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
+  const [uploadingIcon, setUploadingIcon] = useState(false);
 
   function load() {
     setLoading(true);
@@ -46,12 +50,34 @@ function DivisiPage() {
       gformLink: item.gformLink || "",
       urutan: item.urutan,
       aktif: item.aktif,
+      icon_filename: item.icon_filename || null,
+      iconPreview: item.icon ? `${API_BASE}${item.icon}` : null,
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function resetForm() {
     setForm(EMPTY_FORM);
+  }
+
+  async function handleIconChange(e) {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // biar bisa pilih file yang sama lagi kalau mau ganti ulang
+    if (!file) return;
+    setUploadingIcon(true);
+    setError("");
+    try {
+      const res = await adminApi.uploadIcon(file);
+      setForm((f) => ({ ...f, icon_filename: res.filename, iconPreview: `${API_BASE}${res.url}` }));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setUploadingIcon(false);
+    }
+  }
+
+  function handleIconRemove() {
+    setForm((f) => ({ ...f, icon_filename: null, iconPreview: null }));
   }
 
   async function handleSubmit(e) {
@@ -69,6 +95,7 @@ function DivisiPage() {
         gformLink: form.gformLink,
         urutan: Number(form.urutan) || 0,
         aktif: form.aktif,
+        icon_filename: form.icon_filename,
       };
       if (form.id) {
         await adminApi.updateDivisi(form.id, payload);
@@ -189,6 +216,41 @@ function DivisiPage() {
                 onChange={(e) => setForm({ ...form, sub: e.target.value })}
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-mj-green"
               />
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-semibold text-mj-ink">Gambar / Icon</label>
+            <div className="flex items-center gap-4">
+              <div className="flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-dashed border-slate-300 bg-slate-50">
+                {form.iconPreview ? (
+                  <img src={form.iconPreview} alt="" className="size-full object-cover" />
+                ) : (
+                  <span className="text-[0.65rem] text-slate-400">Belum ada</span>
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="w-fit cursor-pointer rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-semibold hover:bg-slate-200">
+                  {uploadingIcon ? "Mengupload..." : form.iconPreview ? "Ganti Gambar" : "Upload Gambar"}
+                  <input
+                    type="file"
+                    accept=".png,.jpg,.jpeg,.svg,.webp"
+                    onChange={handleIconChange}
+                    disabled={uploadingIcon}
+                    className="hidden"
+                  />
+                </label>
+                {form.iconPreview ? (
+                  <button
+                    type="button"
+                    onClick={handleIconRemove}
+                    className="w-fit text-xs font-semibold text-red-600 hover:underline"
+                  >
+                    Hapus gambar
+                  </button>
+                ) : null}
+                <p className="text-[0.65rem] text-slate-400">PNG, JPG, SVG, atau WEBP. Maks 5MB.</p>
+              </div>
             </div>
           </div>
 

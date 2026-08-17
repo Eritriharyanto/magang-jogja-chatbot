@@ -1,0 +1,314 @@
+import { useEffect, useState } from "react";
+import AdminLayout from "@/admin/AdminLayout";
+import ListFieldEditor from "@/admin/components/ListFieldEditor";
+import * as adminApi from "@/lib/adminApi";
+
+const EMPTY_FORM = {
+  originalNama: null, // null = mode tambah baru; diisi pas edit (buat tau nama lama)
+  nama_posisi: "",
+  deskripsi: "",
+  jobdesk: [],
+  skill_dibutuhkan: [],
+};
+
+function KnowledgePage() {
+  const [tab, setTab] = useState("posisi"); // "posisi" | "info"
+
+  return (
+    <AdminLayout title="Isi Pengetahuan Chatbot">
+      <p className="mb-4 text-sm text-slate-500">
+        Ini data yang dipakai <b>chatbot AI</b> buat menjawab pertanyaan pengunjung — beda dari halaman{" "}
+        <b>Posisi Magang</b> yang cuma ngatur tampilan website. Ubah di sini kalau mau jawaban chatbot
+        ikut ter-update.
+      </p>
+
+      <div className="mb-6 flex gap-2 border-b border-slate-200">
+        <TabButton active={tab === "posisi"} onClick={() => setTab("posisi")}>
+          Daftar Posisi
+        </TabButton>
+        <TabButton active={tab === "info"} onClick={() => setTab("info")}>
+          Info Program (Mode Lanjutan)
+        </TabButton>
+      </div>
+
+      {tab === "posisi" ? <PosisiKnowledgeTab /> : <InfoProgramTab />}
+    </AdminLayout>
+  );
+}
+
+function TabButton({ active, onClick, children }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`-mb-px border-b-2 px-4 py-2 text-sm font-semibold transition-colors ${
+        active ? "border-mj-green text-mj-green" : "border-transparent text-slate-500 hover:text-mj-ink"
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+function PosisiKnowledgeTab() {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [saving, setSaving] = useState(false);
+
+  function load() {
+    setLoading(true);
+    adminApi
+      .listPosisiKnowledge()
+      .then(setItems)
+      .catch((e) => setError(e.message))
+      .finally(() => setLoading(false));
+  }
+
+  useEffect(load, []);
+
+  function startEdit(item) {
+    setForm({
+      originalNama: item.nama_posisi,
+      nama_posisi: item.nama_posisi,
+      deskripsi: item.deskripsi || "",
+      jobdesk: item.jobdesk || [],
+      skill_dibutuhkan: item.skill_dibutuhkan || [],
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function resetForm() {
+    setForm(EMPTY_FORM);
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setSaving(true);
+    setError("");
+    try {
+      const payload = {
+        nama_posisi: form.nama_posisi,
+        deskripsi: form.deskripsi,
+        jobdesk: form.jobdesk,
+        skill_dibutuhkan: form.skill_dibutuhkan,
+      };
+      if (form.originalNama) {
+        await adminApi.updatePosisiKnowledge(form.originalNama, payload);
+        if (form.nama_posisi !== form.originalNama) {
+          // Backend gak dukung "rename" nama posisi — kalau namanya diganti,
+          // hapus entri lama lalu buat entri baru dengan nama barunya.
+          await adminApi.deletePosisiKnowledge(form.originalNama);
+          await adminApi.createPosisiKnowledge(payload);
+        }
+      } else {
+        await adminApi.createPosisiKnowledge(payload);
+      }
+      resetForm();
+      load();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleDelete(item) {
+    if (!window.confirm(`Hapus "${item.nama_posisi}" dari pengetahuan chatbot? Ini gak bisa dibatalkan.`))
+      return;
+    try {
+      await adminApi.deletePosisiKnowledge(item.nama_posisi);
+      if (form.originalNama === item.nama_posisi) resetForm();
+      load();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  return (
+    <div>
+      {error ? (
+        <p className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
+      ) : null}
+
+      <div className="grid gap-6 lg:grid-cols-[1fr_1.3fr]">
+        <div className="rounded-xl bg-white shadow">
+          <div className="border-b border-slate-100 px-5 py-3 text-sm font-semibold text-slate-500">
+            {loading ? "Memuat..." : `${items.length} posisi diketahui chatbot`}
+          </div>
+          <ul className="max-h-[70vh] divide-y divide-slate-100 overflow-y-auto">
+            {items.map((item) => (
+              <li key={item.nama_posisi} className="flex items-center justify-between gap-3 px-5 py-3">
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold text-mj-ink">{item.nama_posisi}</p>
+                  <p className="truncate text-xs text-slate-400">
+                    {(item.jobdesk || []).length} jobdesk · {(item.skill_dibutuhkan || []).length} skill
+                  </p>
+                </div>
+                <div className="flex shrink-0 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => startEdit(item)}
+                    className="rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-semibold hover:bg-slate-200"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(item)}
+                    className="rounded-lg bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-100"
+                  >
+                    Hapus
+                  </button>
+                </div>
+              </li>
+            ))}
+            {!loading && items.length === 0 ? (
+              <li className="px-5 py-6 text-center text-sm text-slate-400">Belum ada posisi.</li>
+            ) : null}
+          </ul>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4 rounded-xl bg-white p-6 shadow">
+          <h2 className="text-sm font-bold uppercase text-slate-500">
+            {form.originalNama ? "Edit Posisi" : "Tambah Posisi Baru"}
+          </h2>
+
+          <div>
+            <label className="mb-1 block text-sm font-semibold text-mj-ink">Nama Posisi</label>
+            <input
+              type="text"
+              required
+              value={form.nama_posisi}
+              onChange={(e) => setForm({ ...form, nama_posisi: e.target.value })}
+              placeholder="mis. Programmer"
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-mj-green"
+            />
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-semibold text-mj-ink">Deskripsi</label>
+            <textarea
+              required
+              rows={2}
+              value={form.deskripsi}
+              onChange={(e) => setForm({ ...form, deskripsi: e.target.value })}
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-mj-green"
+            />
+          </div>
+
+          <ListFieldEditor
+            label="Jobdesk"
+            items={form.jobdesk}
+            onChange={(jobdesk) => setForm({ ...form, jobdesk })}
+          />
+
+          <ListFieldEditor
+            label="Skill dibutuhkan"
+            items={form.skill_dibutuhkan}
+            onChange={(skill_dibutuhkan) => setForm({ ...form, skill_dibutuhkan })}
+          />
+
+          <div className="flex gap-3 pt-2">
+            <button
+              type="submit"
+              disabled={saving}
+              className="rounded-full bg-mj-green px-6 py-2 text-sm font-bold uppercase text-white hover:bg-mj-green-dark disabled:opacity-50"
+            >
+              {saving ? "Menyimpan..." : form.originalNama ? "Simpan Perubahan" : "Tambah Posisi"}
+            </button>
+            {form.originalNama ? (
+              <button
+                type="button"
+                onClick={resetForm}
+                className="rounded-full bg-slate-100 px-6 py-2 text-sm font-bold uppercase text-slate-600 hover:bg-slate-200"
+              >
+                Batal
+              </button>
+            ) : null}
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function InfoProgramTab() {
+  const [text, setText] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  useEffect(() => {
+    setLoading(true);
+    adminApi
+      .getKnowledge()
+      .then((kb) => setText(JSON.stringify(kb.informasi_program || {}, null, 2)))
+      .catch((e) => setError(e.message))
+      .finally(() => setLoading(false));
+  }, []);
+
+  async function handleSave(e) {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    let parsed;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      setError("Format JSON tidak valid — cek lagi tanda kurung/koma-nya.");
+      return;
+    }
+    setSaving(true);
+    try {
+      await adminApi.updateInformasiProgram(parsed);
+      setSuccess("Tersimpan — chatbot langsung pakai info terbaru ini.");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <div className="rounded-xl bg-white p-6 shadow">
+      <p className="mb-3 text-sm text-slate-500">
+        Ini data umum program (kontak admin, syarat pendaftaran, durasi, fasilitas, biaya, dll) yang
+        dipakai chatbot buat jawab pertanyaan di luar daftar posisi. Edit langsung dalam format JSON,
+        lalu simpan — struktur (nama field) sebaiknya dipertahankan, cukup ubah isinya.
+      </p>
+
+      {error ? (
+        <p className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
+      ) : null}
+      {success ? (
+        <p className="mb-3 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">{success}</p>
+      ) : null}
+
+      {loading ? (
+        <p className="text-sm text-slate-400">Memuat...</p>
+      ) : (
+        <form onSubmit={handleSave}>
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            rows={24}
+            spellCheck={false}
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 font-mono text-xs outline-none focus:border-mj-green"
+          />
+          <button
+            type="submit"
+            disabled={saving}
+            className="mt-4 rounded-full bg-mj-green px-6 py-2 text-sm font-bold uppercase text-white hover:bg-mj-green-dark disabled:opacity-50"
+          >
+            {saving ? "Menyimpan..." : "Simpan Info Program"}
+          </button>
+        </form>
+      )}
+    </div>
+  );
+}
+
+export default KnowledgePage;
