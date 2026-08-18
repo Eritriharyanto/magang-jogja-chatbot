@@ -5,12 +5,26 @@ Dua mode, sama seperti referensi:
   sering berubah — nama posisi, deskripsi, jobdesk, skill).
 - Mode lanjutan: kirim seluruh objek JSON buat overwrite penuh
   `informasi_program` (field yang jarang berubah: kontak, syarat, dll)."""
-from flask import Blueprint, request, jsonify
+import os
+
+from flask import Blueprint, current_app, request, jsonify
 
 from ... import state
 from ...routes.auth import admin_login_required
 
 bp = Blueprint("admin_knowledge", __name__, url_prefix="/knowledge")
+
+
+def _delete_icon_file(filename):
+    """Hapus file icon lama dari disk kalau sudah gak dipakai (diganti/dihapus)."""
+    if not filename:
+        return
+    try:
+        path = os.path.join(current_app.config["ICON_UPLOAD_DIR"], filename)
+        if os.path.isfile(path):
+            os.remove(path)
+    except OSError:
+        pass
 
 
 @bp.get("")
@@ -50,6 +64,7 @@ def create_posisi():
         "deskripsi": data.get("deskripsi", ""),
         "jobdesk": data.get("jobdesk", []),
         "skill_dibutuhkan": data.get("skill_dibutuhkan", []),
+        "icon_filename": data.get("icon_filename"),
     })
     kb["posisi_magang"] = posisi_list
     state.save_kb(kb)
@@ -65,7 +80,8 @@ def update_posisi(nama_posisi):
     found = False
     for p in posisi_list:
         if p["nama_posisi"] == nama_posisi:
-            for field in ("nama_posisi", "deskripsi", "jobdesk", "skill_dibutuhkan"):
+            old_icon_filename = p.get("icon_filename")
+            for field in ("nama_posisi", "deskripsi", "jobdesk", "skill_dibutuhkan", "icon_filename"):
                 if field in data:
                     p[field] = data[field]
             found = True
@@ -76,6 +92,10 @@ def update_posisi(nama_posisi):
 
     kb["posisi_magang"] = posisi_list
     state.save_kb(kb)
+
+    if "icon_filename" in data and old_icon_filename and old_icon_filename != data["icon_filename"]:
+        _delete_icon_file(old_icon_filename)
+
     return jsonify({"ok": True})
 
 
@@ -83,10 +103,12 @@ def update_posisi(nama_posisi):
 @admin_login_required
 def delete_posisi(nama_posisi):
     kb = dict(state.KB)
-    posisi_list = [p for p in kb.get("posisi_magang", []) if p["nama_posisi"] != nama_posisi]
-    if len(posisi_list) == len(kb.get("posisi_magang", [])):
+    posisi_list = kb.get("posisi_magang", [])
+    to_delete = next((p for p in posisi_list if p["nama_posisi"] == nama_posisi), None)
+    if to_delete is None:
         return jsonify({"error": "Posisi tidak ditemukan"}), 404
 
-    kb["posisi_magang"] = posisi_list
+    kb["posisi_magang"] = [p for p in posisi_list if p["nama_posisi"] != nama_posisi]
     state.save_kb(kb)
+    _delete_icon_file(to_delete.get("icon_filename"))
     return jsonify({"ok": True})

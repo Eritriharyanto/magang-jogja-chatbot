@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AdminLayout from "@/admin/AdminLayout";
 import ListFieldEditor from "@/admin/components/ListFieldEditor";
 import * as adminApi from "@/lib/adminApi";
+import { API_BASE } from "@/lib/api";
 
 const EMPTY_FORM = {
   originalNama: null, // null = mode tambah baru; diisi pas edit (buat tau nama lama)
@@ -9,20 +10,23 @@ const EMPTY_FORM = {
   deskripsi: "",
   jobdesk: [],
   skill_dibutuhkan: [],
+  icon_filename: null,
+  iconPreview: null,
 };
 
 function KnowledgePage() {
   const [tab, setTab] = useState("posisi"); // "posisi" | "info"
 
   return (
-    <AdminLayout title="Isi Pengetahuan Chatbot">
-      <p className="mb-4 text-sm text-slate-500">
-        Ini data yang dipakai <b>chatbot AI</b> buat menjawab pertanyaan pengunjung — beda dari halaman{" "}
-        <b>Posisi Magang</b> yang cuma ngatur tampilan website. Ubah di sini kalau mau jawaban chatbot
-        ikut ter-update.
+    <AdminLayout title='Isi Pengetahuan Chatbot'>
+      <p className='mb-4 text-sm text-slate-500'>
+        Ini data yang dipakai <b>chatbot AI</b> buat menjawab pertanyaan
+        pengunjung — beda dari halaman <b>Posisi Magang</b> yang cuma ngatur
+        tampilan website. Ubah di sini kalau mau jawaban chatbot ikut
+        ter-update.
       </p>
 
-      <div className="mb-6 flex gap-2 border-b border-slate-200">
+      <div className='mb-6 flex gap-2 border-b border-slate-200'>
         <TabButton active={tab === "posisi"} onClick={() => setTab("posisi")}>
           Daftar Posisi
         </TabButton>
@@ -39,10 +43,12 @@ function KnowledgePage() {
 function TabButton({ active, onClick, children }) {
   return (
     <button
-      type="button"
+      type='button'
       onClick={onClick}
       className={`-mb-px border-b-2 px-4 py-2 text-sm font-semibold transition-colors ${
-        active ? "border-mj-green text-mj-green" : "border-transparent text-slate-500 hover:text-mj-ink"
+        active
+          ? "border-mj-green text-mj-green"
+          : "border-transparent text-slate-500 hover:text-mj-ink"
       }`}
     >
       {children}
@@ -56,6 +62,7 @@ function PosisiKnowledgeTab() {
   const [error, setError] = useState("");
   const [form, setForm] = useState(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
+  const [uploadingIcon, setUploadingIcon] = useState(false);
 
   function load() {
     setLoading(true);
@@ -75,12 +82,40 @@ function PosisiKnowledgeTab() {
       deskripsi: item.deskripsi || "",
       jobdesk: item.jobdesk || [],
       skill_dibutuhkan: item.skill_dibutuhkan || [],
+      icon_filename: item.icon_filename || null,
+      iconPreview: item.icon_filename
+        ? `${API_BASE}/uploads/icons/${item.icon_filename}`
+        : null,
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function resetForm() {
     setForm(EMPTY_FORM);
+  }
+
+  async function handleIconChange(e) {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // biar bisa pilih file yang sama lagi kalau mau ganti ulang
+    if (!file) return;
+    setUploadingIcon(true);
+    setError("");
+    try {
+      const res = await adminApi.uploadIcon(file);
+      setForm((f) => ({
+        ...f,
+        icon_filename: res.filename,
+        iconPreview: `${API_BASE}${res.url}`,
+      }));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setUploadingIcon(false);
+    }
+  }
+
+  function handleIconRemove() {
+    setForm((f) => ({ ...f, icon_filename: null, iconPreview: null }));
   }
 
   async function handleSubmit(e) {
@@ -93,6 +128,7 @@ function PosisiKnowledgeTab() {
         deskripsi: form.deskripsi,
         jobdesk: form.jobdesk,
         skill_dibutuhkan: form.skill_dibutuhkan,
+        icon_filename: form.icon_filename,
       };
       if (form.originalNama) {
         await adminApi.updatePosisiKnowledge(form.originalNama, payload);
@@ -115,7 +151,11 @@ function PosisiKnowledgeTab() {
   }
 
   async function handleDelete(item) {
-    if (!window.confirm(`Hapus "${item.nama_posisi}" dari pengetahuan chatbot? Ini gak bisa dibatalkan.`))
+    if (
+      !window.confirm(
+        `Hapus "${item.nama_posisi}" dari pengetahuan chatbot? Ini gak bisa dibatalkan.`,
+      )
+    )
       return;
     try {
       await adminApi.deletePosisiKnowledge(item.nama_posisi);
@@ -129,35 +169,54 @@ function PosisiKnowledgeTab() {
   return (
     <div>
       {error ? (
-        <p className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
+        <p className='mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600'>
+          {error}
+        </p>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_1.3fr]">
-        <div className="rounded-xl bg-white shadow">
-          <div className="border-b border-slate-100 px-5 py-3 text-sm font-semibold text-slate-500">
+      <div className='grid gap-6 lg:grid-cols-[1fr_1.3fr]'>
+        <div className='rounded-xl bg-white shadow'>
+          <div className='border-b border-slate-100 px-5 py-3 text-sm font-semibold text-slate-500'>
             {loading ? "Memuat..." : `${items.length} posisi diketahui chatbot`}
           </div>
-          <ul className="max-h-[70vh] divide-y divide-slate-100 overflow-y-auto">
+          <ul className='max-h-[70vh] divide-y divide-slate-100 overflow-y-auto'>
             {items.map((item) => (
-              <li key={item.nama_posisi} className="flex items-center justify-between gap-3 px-5 py-3">
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-mj-ink">{item.nama_posisi}</p>
-                  <p className="truncate text-xs text-slate-400">
-                    {(item.jobdesk || []).length} jobdesk · {(item.skill_dibutuhkan || []).length} skill
-                  </p>
+              <li
+                key={item.nama_posisi}
+                className='flex items-center justify-between gap-3 px-5 py-3'
+              >
+                <div className='flex min-w-0 items-center gap-3'>
+                  <div className='flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-slate-50'>
+                    {item.icon_filename ? (
+                      <img
+                        src={`${API_BASE}/uploads/icons/${item.icon_filename}`}
+                        alt=''
+                        className='size-full object-cover'
+                      />
+                    ) : null}
+                  </div>
+                  <div className='min-w-0'>
+                    <p className='truncate text-sm font-semibold text-mj-ink'>
+                      {item.nama_posisi}
+                    </p>
+                    <p className='truncate text-xs text-slate-400'>
+                      {(item.jobdesk || []).length} jobdesk ·{" "}
+                      {(item.skill_dibutuhkan || []).length} skill
+                    </p>
+                  </div>
                 </div>
-                <div className="flex shrink-0 gap-2">
+                <div className='flex shrink-0 gap-2'>
                   <button
-                    type="button"
+                    type='button'
                     onClick={() => startEdit(item)}
-                    className="rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-semibold hover:bg-slate-200"
+                    className='rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-semibold hover:bg-slate-200'
                   >
                     Edit
                   </button>
                   <button
-                    type="button"
+                    type='button'
                     onClick={() => handleDelete(item)}
-                    className="rounded-lg bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-100"
+                    className='rounded-lg bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-100'
                   >
                     Hapus
                   </button>
@@ -165,64 +224,131 @@ function PosisiKnowledgeTab() {
               </li>
             ))}
             {!loading && items.length === 0 ? (
-              <li className="px-5 py-6 text-center text-sm text-slate-400">Belum ada posisi.</li>
+              <li className='px-5 py-6 text-center text-sm text-slate-400'>
+                Belum ada posisi.
+              </li>
             ) : null}
           </ul>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 rounded-xl bg-white p-6 shadow">
-          <h2 className="text-sm font-bold uppercase text-slate-500">
+        <form
+          onSubmit={handleSubmit}
+          className='space-y-4 rounded-xl bg-white p-6 shadow'
+        >
+          <h2 className='text-sm font-bold uppercase text-slate-500'>
             {form.originalNama ? "Edit Posisi" : "Tambah Posisi Baru"}
           </h2>
 
           <div>
-            <label className="mb-1 block text-sm font-semibold text-mj-ink">Nama Posisi</label>
+            <label className='mb-1 block text-sm font-semibold text-mj-ink'>
+              Nama Posisi
+            </label>
             <input
-              type="text"
+              type='text'
               required
               value={form.nama_posisi}
-              onChange={(e) => setForm({ ...form, nama_posisi: e.target.value })}
-              placeholder="mis. Programmer"
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-mj-green"
+              onChange={(e) =>
+                setForm({ ...form, nama_posisi: e.target.value })
+              }
+              placeholder='mis. Programmer'
+              className='w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-mj-green'
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-semibold text-mj-ink">Deskripsi</label>
+            <label className='mb-1 block text-sm font-semibold text-mj-ink'>
+              Deskripsi
+            </label>
             <textarea
               required
               rows={2}
               value={form.deskripsi}
               onChange={(e) => setForm({ ...form, deskripsi: e.target.value })}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-mj-green"
+              className='w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-mj-green'
             />
           </div>
 
+          <div>
+            <label className='mb-1 block text-sm font-semibold text-mj-ink'>
+              Gambar / Icon
+            </label>
+            <div className='flex items-center gap-4'>
+              <div className='flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-dashed border-slate-300 bg-slate-50'>
+                {form.iconPreview ? (
+                  <img
+                    src={form.iconPreview}
+                    alt=''
+                    className='size-full object-cover'
+                  />
+                ) : (
+                  <span className='text-[0.65rem] text-slate-400'>
+                    Belum ada
+                  </span>
+                )}
+              </div>
+              <div className='flex flex-col gap-2'>
+                <label className='w-fit cursor-pointer rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-semibold hover:bg-slate-200'>
+                  {uploadingIcon
+                    ? "Mengupload..."
+                    : form.iconPreview
+                      ? "Ganti Gambar"
+                      : "Upload Gambar"}
+                  <input
+                    type='file'
+                    accept='.png,.jpg,.jpeg,.svg,.webp'
+                    onChange={handleIconChange}
+                    disabled={uploadingIcon}
+                    className='hidden'
+                  />
+                </label>
+                {form.iconPreview ? (
+                  <button
+                    type='button'
+                    onClick={handleIconRemove}
+                    className='w-fit text-xs font-semibold text-red-600 hover:underline'
+                  >
+                    Hapus gambar
+                  </button>
+                ) : null}
+                <p className='text-[0.65rem] text-slate-400'>
+                  PNG, JPG, SVG, atau WEBP. Maks 5MB. (Cuma buat referensi
+                  visual di admin — chatbot AI sendiri tetap jawab pakai teks.)
+                </p>
+              </div>
+            </div>
+          </div>
+
           <ListFieldEditor
-            label="Jobdesk"
+            label='Jobdesk'
             items={form.jobdesk}
             onChange={(jobdesk) => setForm({ ...form, jobdesk })}
           />
 
           <ListFieldEditor
-            label="Skill dibutuhkan"
+            label='Skill dibutuhkan'
             items={form.skill_dibutuhkan}
-            onChange={(skill_dibutuhkan) => setForm({ ...form, skill_dibutuhkan })}
+            onChange={(skill_dibutuhkan) =>
+              setForm({ ...form, skill_dibutuhkan })
+            }
           />
 
-          <div className="flex gap-3 pt-2">
+          <div className='flex gap-3 pt-2'>
             <button
-              type="submit"
+              type='submit'
               disabled={saving}
-              className="rounded-full bg-mj-green px-6 py-2 text-sm font-bold uppercase text-white hover:bg-mj-green-dark disabled:opacity-50"
+              className='rounded-full bg-mj-green px-6 py-2 text-sm font-bold uppercase text-white hover:bg-mj-green-dark disabled:opacity-50'
             >
-              {saving ? "Menyimpan..." : form.originalNama ? "Simpan Perubahan" : "Tambah Posisi"}
+              {saving
+                ? "Menyimpan..."
+                : form.originalNama
+                  ? "Simpan Perubahan"
+                  : "Tambah Posisi"}
             </button>
             {form.originalNama ? (
               <button
-                type="button"
+                type='button'
                 onClick={resetForm}
-                className="rounded-full bg-slate-100 px-6 py-2 text-sm font-bold uppercase text-slate-600 hover:bg-slate-200"
+                className='rounded-full bg-slate-100 px-6 py-2 text-sm font-bold uppercase text-slate-600 hover:bg-slate-200'
               >
                 Batal
               </button>
@@ -245,7 +371,9 @@ function InfoProgramTab() {
     setLoading(true);
     adminApi
       .getKnowledge()
-      .then((kb) => setText(JSON.stringify(kb.informasi_program || {}, null, 2)))
+      .then((kb) =>
+        setText(JSON.stringify(kb.informasi_program || {}, null, 2)),
+      )
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
   }, []);
@@ -273,22 +401,27 @@ function InfoProgramTab() {
   }
 
   return (
-    <div className="rounded-xl bg-white p-6 shadow">
-      <p className="mb-3 text-sm text-slate-500">
-        Ini data umum program (kontak admin, syarat pendaftaran, durasi, fasilitas, biaya, dll) yang
-        dipakai chatbot buat jawab pertanyaan di luar daftar posisi. Edit langsung dalam format JSON,
-        lalu simpan — struktur (nama field) sebaiknya dipertahankan, cukup ubah isinya.
+    <div className='rounded-xl bg-white p-6 shadow'>
+      <p className='mb-3 text-sm text-slate-500'>
+        Ini data umum program (kontak admin, syarat pendaftaran, durasi,
+        fasilitas, biaya, dll) yang dipakai chatbot buat jawab pertanyaan di
+        luar daftar posisi. Edit langsung dalam format JSON, lalu simpan —
+        struktur (nama field) sebaiknya dipertahankan, cukup ubah isinya.
       </p>
 
       {error ? (
-        <p className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
+        <p className='mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600'>
+          {error}
+        </p>
       ) : null}
       {success ? (
-        <p className="mb-3 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">{success}</p>
+        <p className='mb-3 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700'>
+          {success}
+        </p>
       ) : null}
 
       {loading ? (
-        <p className="text-sm text-slate-400">Memuat...</p>
+        <p className='text-sm text-slate-400'>Memuat...</p>
       ) : (
         <form onSubmit={handleSave}>
           <textarea
@@ -296,12 +429,12 @@ function InfoProgramTab() {
             onChange={(e) => setText(e.target.value)}
             rows={24}
             spellCheck={false}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 font-mono text-xs outline-none focus:border-mj-green"
+            className='w-full rounded-lg border border-slate-300 px-3 py-2 font-mono text-xs outline-none focus:border-mj-green'
           />
           <button
-            type="submit"
+            type='submit'
             disabled={saving}
-            className="mt-4 rounded-full bg-mj-green px-6 py-2 text-sm font-bold uppercase text-white hover:bg-mj-green-dark disabled:opacity-50"
+            className='mt-4 rounded-full bg-mj-green px-6 py-2 text-sm font-bold uppercase text-white hover:bg-mj-green-dark disabled:opacity-50'
           >
             {saving ? "Menyimpan..." : "Simpan Info Program"}
           </button>
