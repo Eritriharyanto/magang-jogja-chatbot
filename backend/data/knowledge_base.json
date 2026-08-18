@@ -430,7 +430,8 @@
         "Paham dasar Python dan library ML (pandas, scikit-learn, dll)",
         "Familiar dengan konsep statistik/data",
         "Mau belajar dan eksperimen model baru"
-      ]
+      ],
+      "icon_filename": null
     }
   ]
 }

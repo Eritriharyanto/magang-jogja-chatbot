@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Reveal from "@/components/Reveal";
-import { getDivisi } from "@/lib/api";
+import { getDivisi, API_BASE } from "@/lib/api";
 import { iconForSlug } from "@/data/posisiIcons";
 import { POSISI as POSISI_FALLBACK } from "@/data/content";
+
+function resolveIcon(p) {
+  if (!p.icon) return iconForSlug(p.slug);
+  // Icon custom yang diupload admin disajikan backend (path relatif "/uploads/...");
+  // ikon fallback bawaan sudah berupa URL absolut hasil import Vite, jadi dibiarkan.
+  return p.icon.startsWith("/") ? `${API_BASE}${p.icon}` : p.icon;
+}
 
 function Posisi() {
   const [posisi, setPosisi] = useState(POSISI_FALLBACK);
@@ -56,7 +63,7 @@ function Posisi() {
               >
                 <div className="flex h-28 items-center justify-center">
                   <img
-                    src={p.icon || iconForSlug(p.slug)}
+                    src={resolveIcon(p)}
                     alt=""
                     aria-hidden="true"
                     loading="lazy"
