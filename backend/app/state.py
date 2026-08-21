@@ -16,7 +16,24 @@ _lock = threading.Lock()
 
 KB: dict = {}
 INTENTS: list = []
+INTENTS_BY_TAG: dict = {}  # {"tanya_kontak_admin": {...}, ...} — lookup cepat by intent tag
 SYSTEM_PROMPT: str = ""
+
+# Kata kunci penanda pesan MASIH nyambung ke topik magang, dipakai
+# intent_matching.is_off_topic() supaya pesan campuran (mis. curhat + tetap
+# nanya soal magang) tidak langsung ditolak sebagai off-topic, tapi
+# diserahkan ke pencocokan intent/Ollama seperti biasa.
+DOMAIN_KEYWORDS = [
+    "magang", "internship", "pkl", "kkn", "kerja praktik",
+    "posisi", "divisi", "jobdesk", "skill", "syarat", "daftar",
+    "programmer", "ui/ux", "human resource", "hr", "social media",
+    "photographer", "videographer", "content writer", "marketing",
+    "desain grafis", "digital marketing", "marcomm", "public relation",
+    "host", "presenter", "tiktok", "voice over", "content planner",
+    "project manager", "las", "animasi", "machine learning",
+    "sertifikat", "uang saku", "wfo", "wfh", "kuota", "gelombang",
+    "mitra", "admin magang jogja", "magangjogja",
+]
 
 
 def _load_json(path):
@@ -41,10 +58,11 @@ def reload_runtime_state():
     """Baca ulang kedua file JSON dari disk dan bangun ulang system prompt.
     Dipanggil otomatis setelah admin simpan perubahan di dashboard
     (lihat app/routes/admin/knowledge.py & intents.py)."""
-    global KB, INTENTS, SYSTEM_PROMPT
+    global KB, INTENTS, INTENTS_BY_TAG, SYSTEM_PROMPT
     with _lock:
         KB = _load_json(KB_PATH)
         INTENTS = _load_json(INTENTS_PATH)["intents"]
+        INTENTS_BY_TAG = {i["intent"]: i for i in INTENTS}
         SYSTEM_PROMPT = build_system_prompt(KB)
 
 

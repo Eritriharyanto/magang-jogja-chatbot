@@ -6,7 +6,14 @@ from flask import Blueprint, jsonify, request, session, current_app
 
 from .. import state
 from ..models import Divisi, KontenItem
-from ..services.intent_matching import match_static_intent
+from ..services.intent_matching import (
+    detect_chat_action,
+    is_off_topic,
+    match_custom_intent_tag,
+    match_sensitive_intent_tag,
+    match_static_intent_tag,
+    try_greeting_answer,
+)
 from ..services.ollama_client import ask_ollama
 from .. import db_chat
 
@@ -97,14 +104,46 @@ def chat():
 
     db_chat.log_message(visitor_id, "user", pesan)
 
-    hasil_static = match_static_intent(
-        pesan, state.INTENTS, threshold=current_app.config.get("INTENT_MATCH_THRESHOLD", 72)
-    )
+    jawaban = None
+    matched_tag = None
+    sumber = None
 
-    if hasil_static:
-        jawaban = hasil_static["jawaban"]
-        sumber = "static"
+    if is_off_topic(pesan):
+        fallback = state.INTENTS_BY_TAG.get("fallback_tidak_dikenali")
+        if fallback:
+            jawaban = fallback["jawaban_default"]
+            matched_tag = "fallback_tidak_dikenali"
+            sumber = "off_topic"
+
+    if jawaban is None:
+        greeting = try_greeting_answer(pesan)
+        if greeting:
+            jawaban = greeting
+            matched_tag = "sapaan"
+            sumber = "greeting"
+
+    if jawaban is None:
+        matched_tag = match_sensitive_intent_tag(pesan)
+        if matched_tag:
+            jawaban = state.INTENTS_BY_TAG[matched_tag]["jawaban_default"]
+            sumber = "sensitive"
+
+    if jawaban is None:
+        matched_tag = match_static_intent_tag(pesan)
+        if matched_tag:
+            jawaban = state.INTENTS_BY_TAG[matched_tag]["jawaban_default"]
+            sumber = "static"
+
+    if jawaban is None:
+        matched_tag = match_custom_intent_tag(pesan)
+        if matched_tag:
+            jawaban = state.INTENTS_BY_TAG[matched_tag]["jawaban_default"]
+            sumber = "custom"
+
+    if jawaban:
+        aksi = detect_chat_action(pesan, matched_tag)
     else:
+        aksi = None
         try:
             jawaban = ask_ollama(
                 host=current_app.config["OLLAMA_HOST"],
@@ -125,4 +164,4 @@ def chat():
 
     db_chat.log_message(visitor_id, "bot", jawaban, source=sumber)
 
-    return jsonify({"jawaban": jawaban, "sumber": sumber})
+    return jsonify({"jawaban": jawaban, "sumber": sumber, "aksi": aksi})
