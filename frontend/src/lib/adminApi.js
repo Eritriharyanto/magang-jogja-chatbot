@@ -13,7 +13,9 @@ async function adminFetch(path, options = {}) {
     // respons kosong (mis. 204), biarkan body null
   }
   if (!res.ok) {
-    const err = new Error(body?.error || `Request ke ${path} gagal (${res.status})`);
+    const err = new Error(
+      body?.error || `Request ke ${path} gagal (${res.status})`,
+    );
     err.status = res.status;
     throw err;
   }
@@ -22,7 +24,10 @@ async function adminFetch(path, options = {}) {
 
 // --- Auth ---
 export const login = (username, password) =>
-  adminFetch("/api/admin/login", { method: "POST", body: JSON.stringify({ username, password }) });
+  adminFetch("/api/admin/login", {
+    method: "POST",
+    body: JSON.stringify({ username, password }),
+  });
 export const logout = () => adminFetch("/api/admin/logout", { method: "POST" });
 export const me = () => adminFetch("/api/admin/me");
 
@@ -52,54 +57,86 @@ export async function uploadIcon(file) {
 // --- Divisi (posisi magang) ---
 export const listDivisi = () => adminFetch("/api/admin/divisi");
 export const createDivisi = (data) =>
-  adminFetch("/api/admin/divisi", { method: "POST", body: JSON.stringify(data) });
+  adminFetch("/api/admin/divisi", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
 export const updateDivisi = (id, data) =>
-  adminFetch(`/api/admin/divisi/${id}`, { method: "PUT", body: JSON.stringify(data) });
-export const deleteDivisi = (id) => adminFetch(`/api/admin/divisi/${id}`, { method: "DELETE" });
+  adminFetch(`/api/admin/divisi/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+export const deleteDivisi = (id) =>
+  adminFetch(`/api/admin/divisi/${id}`, { method: "DELETE" });
 
 // --- Konten (syarat / fasilitas) ---
-export const listKonten = (kategori) => adminFetch(`/api/admin/konten/${kategori}`);
+export const listKonten = (kategori) =>
+  adminFetch(`/api/admin/konten/${kategori}`);
 export const createKonten = (kategori, data) =>
-  adminFetch(`/api/admin/konten/${kategori}`, { method: "POST", body: JSON.stringify(data) });
+  adminFetch(`/api/admin/konten/${kategori}`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
 export const updateKonten = (itemId, data) =>
-  adminFetch(`/api/admin/konten/item/${itemId}`, { method: "PUT", body: JSON.stringify(data) });
+  adminFetch(`/api/admin/konten/item/${itemId}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
 export const deleteKonten = (itemId) =>
   adminFetch(`/api/admin/konten/item/${itemId}`, { method: "DELETE" });
 
 // --- Intents (FAQ statis chatbot) ---
 export const listIntents = () => adminFetch("/api/admin/intents");
 export const createIntent = (data) =>
-  adminFetch("/api/admin/intents", { method: "POST", body: JSON.stringify(data) });
+  adminFetch("/api/admin/intents", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
 export const updateIntent = (nama, data) =>
   adminFetch(`/api/admin/intents/${encodeURIComponent(nama)}`, {
     method: "PUT",
     body: JSON.stringify(data),
   });
 export const deleteIntent = (nama) =>
-  adminFetch(`/api/admin/intents/${encodeURIComponent(nama)}`, { method: "DELETE" });
+  adminFetch(`/api/admin/intents/${encodeURIComponent(nama)}`, {
+    method: "DELETE",
+  });
 
 // --- Riwayat chat ---
 export const listRiwayat = () => adminFetch("/api/admin/riwayat");
-export const getTranscript = (visitorId) => adminFetch(`/api/admin/riwayat/${visitorId}`);
+export const getTranscript = (visitorId) =>
+  adminFetch(`/api/admin/riwayat/${visitorId}`);
 
 // --- Knowledge base (isi pengetahuan chatbot AI) ---
 export const getKnowledge = () => adminFetch("/api/admin/knowledge");
 export const updateInformasiProgram = (data) =>
-  adminFetch("/api/admin/knowledge/informasi-program", { method: "PUT", body: JSON.stringify(data) });
-export const listPosisiKnowledge = () => adminFetch("/api/admin/knowledge/posisi");
+  adminFetch("/api/admin/knowledge/informasi-program", {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+export const listPosisiKnowledge = () =>
+  adminFetch("/api/admin/knowledge/posisi");
 export const createPosisiKnowledge = (data) =>
-  adminFetch("/api/admin/knowledge/posisi", { method: "POST", body: JSON.stringify(data) });
+  adminFetch("/api/admin/knowledge/posisi", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
 export const updatePosisiKnowledge = (namaPosisi, data) =>
   adminFetch(`/api/admin/knowledge/posisi/${encodeURIComponent(namaPosisi)}`, {
     method: "PUT",
     body: JSON.stringify(data),
   });
 export const deletePosisiKnowledge = (namaPosisi) =>
-  adminFetch(`/api/admin/knowledge/posisi/${encodeURIComponent(namaPosisi)}`, { method: "DELETE" });
+  adminFetch(`/api/admin/knowledge/posisi/${encodeURIComponent(namaPosisi)}`, {
+    method: "DELETE",
+  });
 
 // --- Pengaturan ---
 export const updatePassword = (passwordLama, passwordBaru) =>
   adminFetch("/api/admin/pengaturan/password", {
     method: "PUT",
-    body: JSON.stringify({ password_lama: passwordLama, password_baru: passwordBaru }),
+    body: JSON.stringify({
+      password_lama: passwordLama,
+      password_baru: passwordBaru,
+    }),
   });
