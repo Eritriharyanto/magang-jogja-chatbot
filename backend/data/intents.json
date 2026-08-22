@@ -87,10 +87,99 @@
         "eh min punten mau nanya kah",
         "selamat malam ga sih min",
         "kak mau tanya ada admin gak ya",
-        "cek min halo ya"
+        "cek min halo ya",
+        "info min"
       ],
       "context_set": "informasi_program.sapaan",
       "jawaban_default": "Halo, selamat datang di Magang Jogja! 👋 Ada yang bisa dibantu seputar info magang, posisi yang tersedia, syarat pendaftaran, atau cara daftarnya? Tinggal tanya aja ya.",
+      "keywords": []
+    },
+    {
+      "intent": "tanya_info_umum_magang",
+      "contoh_pertanyaan": [
+        "misi min, kasih info dong soal magang jogja",
+        "btw min, penasaran sama magang jogja",
+        "kak, baru denger magang jogja, itu apa",
+        "misi min, ceritain magang jogja dong",
+        "min mau nanya, magang jogja tuh apaan",
+        "boleh tanya gak min, magangjogja.com itu apa",
+        "permisi min, magangjogja.com itu apa",
+        "kak, magang jogja itu apa sih kak",
+        "permisi min, pengen tau soal magang jogja",
+        "gan, magang jogja ini beneran ada gak",
+        "min mau nanya, info magang dong ya",
+        "eh min, magang jogja itu gimana ceritanya",
+        "permisi min, magang jogja itu apaan",
+        "btw min, singkatnya magang jogja itu apa",
+        "min izin tanya, boleh minta info soal magang jogja gak",
+        "boleh tanya gak min, overview magang jogja dong",
+        "halo min, mau tau info magang jogja",
+        "kak, di magang jogja ngapain aja sih",
+        "min izin tanya, baru denger magang jogja, itu apa",
+        "eh min, pengen tau soal magang jogja",
+        "boleh tanya gak min, magang jogja ini tentang apa sih",
+        "min mau nanya, magang jogja isinya apa aja",
+        "boleh tanya gak min, kenalin dong magang jogja",
+        "misi min, magang jogja punya siapa",
+        "halo min, jelasin magang jogja dong",
+        "Magang jogja itu apa sih ya",
+        "boleh tanya gak min, magang jogja itu gimana ceritanya",
+        "misi min, info seputar magang jogja dong",
+        "min mau nanya, mau tau info magang jogja dong",
+        "kak, pengen tau soal magang jogja",
+        "kak, apa bedanya magang jogja sama yang lain",
+        "Gambaran umum soal magang jogja dong",
+        "Magangjogja.com itu apa",
+        "eh min, magang jogja itu apa sih",
+        "btw min, kenapa harus ikut magang jogja",
+        "btw min, pengen tau soal magang jogja",
+        "cek min, mau tau info magang jogja",
+        "halo min, tujuan magang jogja apa sih",
+        "gan, magang jogja itu apaan",
+        "hai min, program magang jogja ini ngapain aja",
+        "btw min, siapa yang bikin magang jogja",
+        "gan, magang jogja itu resmi gak sih",
+        "min mau nanya, di magang jogja ngapain aja",
+        "permisi min, magang jogja ini tentang apa",
+        "hai min, mau kenalan sama magang jogja",
+        "misi min, magangjogja.com itu apa",
+        "misi min, magangjogja.com itu apa ya",
+        "misi min, mau tau info magang jogja",
+        "hai min, overview magang jogja dong",
+        "Ini web magang jogja buat apa",
+        "permisi min, visi misi magang jogja apa",
+        "hai min, visi misi magang jogja apa",
+        "misi min, ini bukan penipuan kan",
+        "min izin tanya, boleh minta info soal magang jogja dong",
+        "permisi min, magang jogja punya siapa",
+        "halo min, jelasin dong magang jogja itu apa",
+        "kak, magang jogja itu apaan ya",
+        "boleh tanya gak min, tujuan magang jogja apa sih",
+        "permisi min, siapa yang bikin magang jogja",
+        "misi min, info magang dong ya",
+        "misi min, magang jogja ini tentang apa",
+        "boleh tanya gak min, magang jogja itu apa sih ya",
+        "gan, ini web magang jogja buat apa",
+        "min izin tanya, overview magang jogja dong",
+        "permisi min, gambaran umum soal magang jogja dong",
+        "boleh tanya gak min, boleh minta info soal magang jogja gak",
+        "boleh tanya gak min, kenapa harus ikut magang jogja",
+        "gan, di magang jogja ngapain aja",
+        "boleh tanya gak min, penasaran sama magang jogja",
+        "misi min, overview magang jogja dong",
+        "min izin tanya, magang jogja ini platform apa",
+        "misi min, magang jogja itu apa sih",
+        "eh min, magang jogja bergerak di bidang apa",
+        "kak, garis besar magang jogja gimana",
+        "misi min, jelasin dong magang jogja itu apa",
+        "btw min, ini web magang jogja buat apa",
+        "btw min, jelasin magang jogja dong",
+        "hai min, intinya magang jogja itu apa",
+        "halo min, apa bedanya magang jogja sama yang lain",
+        "gan, kenalin dong magang jogja"
+      ],
+      "context_set": "informasi_program",
+      "jawaban_default": "Magang Jogja itu platform penyalur program magang/PKL di Yogyakarta 😊 Beberapa hal penting soal programnya:\n- Buka banyak posisi magang di bidang kreatif, digital, teknologi, sampai teknis\n- Peserta didampingi langsung sama tim ahli/pembimbing selama magang berjalan\n- Terbuka buat mahasiswa aktif (magang kuliah/KKN/kerja praktik), siswa SMK/SMA (PKL), sampai fresh graduate\n- Durasi magang fleksibel, sekitar 1-6 bulan sesuai kebutuhan surat pengantar\n- Penempatan di Yogyakarta, gratis alias gak dipungut biaya pendaftaran\n\nKalau mau tau posisi apa aja yang tersedia, tinggal tanya aja ya. Info lebih detail bisa langsung hubungi Admin Magang Jogja di 0895-2900-2944, follow Instagram @magangjogja, atau cek https://magangjogja.com/.",
       "keywords": []
     },
     {
@@ -182,7 +271,7 @@
         "cek min posisi magang buat mahasiswa apa aja yang ada yaa"
       ],
       "context_set": "informasi_program.daftar_posisi",
-      "jawaban_default": "Posisi magang yang tersedia di Magang Jogja antara lain: Administrasi, Programmer, UI/UX Designer, Human Resource, Social Media Specialist, Photographer / Videographer, Content Writer, Marketing Sales, Desain Grafis, Digital Marketing, Marcomm / Public Relation, Host / Presenter, TikTok Creator, Voice Over Talent, Content Planner, Project Manager, Las, Animasi, Machine Learning, dan masih ada formasi lainnya. 😊\n\nKalau mau tau jobdesk salah satu posisinya, tinggal sebutin aja posisinya ya. Untuk info paling lengkap dan update, bisa juga cek langsung di https://magangjogja.com/.",
+      "jawaban_default": "Posisi magang yang tersedia di Magang Jogja antara lain:\n1. Administrasi\n2. Programmer\n3. UI/UX Designer\n4. Human Resource\n5. Social Media Specialist\n6. Photographer / Videographer\n7. Content Writer\n8. Marketing Sales\n9. Desain Grafis\n10. Digital Marketing\n11. Marcomm / Public Relation\n12. Host / Presenter\n13. TikTok Creator\n14. Voice Over Talent\n15. Content Planner\n16. Project Manager\n17. Las\n18. Animasi\n19. Machine Learning\n...dan masih ada formasi lainnya. 😊\n\nKalau mau tau jobdesk salah satu posisinya, tinggal sebutin aja posisinya ya. Untuk info paling lengkap dan update, bisa juga cek langsung di https://magangjogja.com/.",
       "keywords": []
     },
     {
@@ -269,9 +358,7 @@
       ],
       "context_set": "posisi_magang.administrasi.jobdesk",
       "jawaban_default": "Sebagai Administrasi di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Mengelola dan merapikan data serta dokumen administrasi\n- Membantu input data menggunakan Ms. Office (Excel & Word)\n- Membuat dan mengarsipkan surat-menyurat\n- Membantu koordinasi jadwal dan kebutuhan operasional tim\n- Melayani komunikasi internal maupun dengan mitra/vendor\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "administrasi"
-      ]
+      "keywords": ["administrasi"]
     },
     {
       "intent": "tanya_jobdesk_programmer",
@@ -363,9 +450,7 @@
       ],
       "context_set": "posisi_magang.programmer.jobdesk",
       "jawaban_default": "Sebagai Programmer di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Membangun dan mengembangkan fitur website/aplikasi (Front End/Back End)\n- Melakukan debugging dan perbaikan bug pada sistem\n- Berkolaborasi dengan tim UI/UX untuk implementasi desain ke kode\n- Melakukan pengujian (testing) fitur sebelum rilis\n- Menulis dokumentasi teknis sederhana untuk kode yang dibuat\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "programmer"
-      ]
+      "keywords": ["programmer"]
     },
     {
       "intent": "tanya_jobdesk_ui_ux_designer",
@@ -452,9 +537,7 @@
       ],
       "context_set": "posisi_magang.ui_ux_designer.jobdesk",
       "jawaban_default": "Sebagai UI/UX Designer di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Membuat wireframe dan mockup desain aplikasi/website\n- Merancang alur pengguna (user flow) yang intuitif\n- Melakukan riset kebutuhan dan kebiasaan pengguna\n- Membuat desain UI menggunakan tools seperti Figma\n- Berkolaborasi dengan tim Programmer untuk implementasi desain\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "ui/ux designer"
-      ]
+      "keywords": ["ui/ux designer"]
     },
     {
       "intent": "tanya_jobdesk_human_resource",
@@ -539,9 +622,7 @@
       ],
       "context_set": "posisi_magang.human_resource.jobdesk",
       "jawaban_default": "Sebagai Human Resource di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Membantu proses rekrutmen dan seleksi kandidat magang/karyawan\n- Mengelola data karyawan/peserta magang\n- Membantu penjadwalan onboarding dan orientasi peserta baru\n- Membantu menyiapkan dokumen kepegawaian\n- Mendukung kegiatan pengembangan tim (training, evaluasi kinerja)\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "human resource"
-      ]
+      "keywords": ["human resource"]
     },
     {
       "intent": "tanya_jobdesk_social_media_specialist",
@@ -625,9 +706,7 @@
       ],
       "context_set": "posisi_magang.social_media_specialist.jobdesk",
       "jawaban_default": "Sebagai Social Media Specialist di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Membuat dan menjadwalkan konten untuk akun media sosial\n- Menyusun caption dan strategi konten harian/mingguan\n- Memantau interaksi (komentar, DM) dan menjaga engagement\n- Menganalisis performa konten (insight/analytics)\n- Mengikuti tren media sosial yang relevan dengan brand\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "social media specialist"
-      ]
+      "keywords": ["social media specialist"]
     },
     {
       "intent": "tanya_jobdesk_photographer__videographer",
@@ -716,9 +795,7 @@
       ],
       "context_set": "posisi_magang.photographer__videographer.jobdesk",
       "jawaban_default": "Sebagai Photographer / Videographer di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Melakukan pemotretan produk, acara, atau konten promosi\n- Mengambil video untuk kebutuhan sosial media/iklan\n- Melakukan editing foto dan video dasar\n- Menyiapkan peralatan dan setting lokasi pengambilan gambar\n- Berkoordinasi dengan tim kreatif terkait konsep visual\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "photographer / videographer"
-      ]
+      "keywords": ["photographer / videographer"]
     },
     {
       "intent": "tanya_jobdesk_content_writer",
@@ -812,9 +889,7 @@
       ],
       "context_set": "posisi_magang.content_writer.jobdesk",
       "jawaban_default": "Sebagai Content Writer di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Menulis artikel, caption, dan copy untuk media sosial/website\n- Melakukan riset topik dan kata kunci relevan\n- Menyesuaikan gaya tulisan dengan tone brand\n- Melakukan proofread dan revisi konten sebelum publish\n- Berkoordinasi dengan tim desain/sosmed untuk penyelarasan konten\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "content writer"
-      ]
+      "keywords": ["content writer"]
     },
     {
       "intent": "tanya_jobdesk_marketing_sales",
@@ -896,9 +971,7 @@
       ],
       "context_set": "posisi_magang.marketing_sales.jobdesk",
       "jawaban_default": "Sebagai Marketing Sales di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Melakukan follow up dan komunikasi dengan calon pelanggan/mitra\n- Membantu menjelaskan produk/layanan kepada calon konsumen\n- Mendukung strategi promosi dan penawaran\n- Mencatat dan melaporkan hasil penjualan/prospek\n- Membangun relasi dengan pelanggan/mitra baru\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "marketing sales"
-      ]
+      "keywords": ["marketing sales"]
     },
     {
       "intent": "tanya_jobdesk_desain_grafis",
@@ -984,9 +1057,7 @@
       ],
       "context_set": "posisi_magang.desain_grafis.jobdesk",
       "jawaban_default": "Sebagai Desain Grafis di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Mendesain feed, poster, dan banner promosi\n- Membuat materi visual untuk sosial media dan website\n- Menjaga konsistensi identitas visual (brand guideline)\n- Mengolah foto/ilustrasi menjadi materi siap pakai\n- Berkoordinasi dengan tim konten dan pemasaran\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "desain grafis"
-      ]
+      "keywords": ["desain grafis"]
     },
     {
       "intent": "tanya_jobdesk_digital_marketing",
@@ -1072,9 +1143,7 @@
       ],
       "context_set": "posisi_magang.digital_marketing.jobdesk",
       "jawaban_default": "Sebagai Digital Marketing di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Membantu menyusun dan menjalankan strategi pemasaran online\n- Mengelola iklan digital (ads) di media sosial/mesin pencari\n- Melakukan riset target audiens dan kompetitor\n- Menganalisis performa campaign digital\n- Mengoptimasi konten agar sesuai kebutuhan SEO/algoritma platform\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "digital marketing"
-      ]
+      "keywords": ["digital marketing"]
     },
     {
       "intent": "tanya_jobdesk_marcomm__public_relation",
@@ -1159,9 +1228,7 @@
       ],
       "context_set": "posisi_magang.marcomm__public_relation.jobdesk",
       "jawaban_default": "Sebagai Marcomm / Public Relation di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Menyusun materi komunikasi dan press release\n- Menjaga citra dan reputasi brand di mata publik\n- Membantu koordinasi kegiatan promosi/event perusahaan\n- Membangun relasi dengan media atau partner eksternal\n- Memantau opini publik terkait brand\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "marcomm / public relation"
-      ]
+      "keywords": ["marcomm / public relation"]
     },
     {
       "intent": "tanya_jobdesk_host__presenter",
@@ -1247,9 +1314,7 @@
       ],
       "context_set": "posisi_magang.host__presenter.jobdesk",
       "jawaban_default": "Sebagai Host / Presenter di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Membawakan acara atau live streaming produk/brand\n- Menyampaikan informasi produk secara menarik dan komunikatif\n- Berinteraksi dengan audiens/penonton selama siaran\n- Berkoordinasi dengan tim produksi terkait rundown acara\n- Menjaga citra positif brand saat tampil di depan publik\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "host / presenter"
-      ]
+      "keywords": ["host / presenter"]
     },
     {
       "intent": "tanya_jobdesk_tiktok_creator",
@@ -1344,9 +1409,7 @@
       ],
       "context_set": "posisi_magang.tiktok_creator.jobdesk",
       "jawaban_default": "Sebagai TikTok Creator di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Membuat ide dan konsep konten video pendek\n- Melakukan syuting dan editing video TikTok\n- Mengikuti tren dan challenge yang relevan dengan brand\n- Menganalisis performa konten untuk optimasi berikutnya\n- Berkolaborasi dengan tim sosial media dan desain\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "tiktok creator"
-      ]
+      "keywords": ["tiktok creator"]
     },
     {
       "intent": "tanya_jobdesk_voice_over_talent",
@@ -1433,9 +1496,7 @@
       ],
       "context_set": "posisi_magang.voice_over_talent.jobdesk",
       "jawaban_default": "Sebagai Voice Over Talent di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Mengisi suara (voice over) untuk video promosi/iklan\n- Menyesuaikan intonasi dan gaya bicara sesuai naskah/brief\n- Melakukan rekaman audio dengan kualitas jelas\n- Berkoordinasi dengan tim video/editor terkait durasi dan penempatan suara\n- Merevisi hasil rekaman sesuai catatan tim kreatif\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "voice over talent"
-      ]
+      "keywords": ["voice over talent"]
     },
     {
       "intent": "tanya_jobdesk_content_planner",
@@ -1530,9 +1591,7 @@
       ],
       "context_set": "posisi_magang.content_planner.jobdesk",
       "jawaban_default": "Sebagai Content Planner di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Menyusun kalender/rencana konten mingguan atau bulanan\n- Menentukan tema dan jenis konten untuk tiap platform\n- Berkoordinasi dengan Content Writer, Desain Grafis, dan tim video\n- Memantau progres produksi konten agar sesuai jadwal\n- Mengevaluasi performa konten untuk perencanaan berikutnya\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "content planner"
-      ]
+      "keywords": ["content planner"]
     },
     {
       "intent": "tanya_jobdesk_project_manager",
@@ -1614,9 +1673,7 @@
       ],
       "context_set": "posisi_magang.project_manager.jobdesk",
       "jawaban_default": "Sebagai Project Manager di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Menyusun timeline dan pembagian tugas tim proyek\n- Memantau progres pekerjaan setiap anggota tim\n- Menjadi penghubung komunikasi antar divisi dalam proyek\n- Mengidentifikasi kendala dan mencari solusi selama proyek berjalan\n- Melaporkan perkembangan proyek kepada atasan/klien\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "project manager"
-      ]
+      "keywords": ["project manager"]
     },
     {
       "intent": "tanya_jobdesk_las",
@@ -1710,9 +1767,7 @@
       ],
       "context_set": "posisi_magang.las.jobdesk",
       "jawaban_default": "Sebagai Las di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Melakukan proses pengelasan sesuai spesifikasi dan gambar kerja\n- Memastikan hasil las rapi, kuat, dan sesuai standar keselamatan\n- Merawat dan menyiapkan peralatan las sebelum dan sesudah digunakan\n- Mematuhi prosedur keselamatan kerja (K3) selama proses pengelasan\n- Berkoordinasi dengan tim produksi/konstruksi terkait target pekerjaan\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "las"
-      ]
+      "keywords": ["las"]
     },
     {
       "intent": "tanya_jobdesk_animasi",
@@ -1805,9 +1860,7 @@
       ],
       "context_set": "posisi_magang.animasi.jobdesk",
       "jawaban_default": "Sebagai Animasi di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Membuat storyboard dan konsep animasi\n- Mengerjakan proses animasi 2D/3D sesuai kebutuhan proyek\n- Menyesuaikan animasi dengan naskah, musik, atau voice over\n- Melakukan rendering dan finalisasi hasil animasi\n- Berkoordinasi dengan tim kreatif terkait konsep visual\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "animasi"
-      ]
+      "keywords": ["animasi"]
     },
     {
       "intent": "tanya_jobdesk_machine_learning",
@@ -1899,9 +1952,7 @@
       ],
       "context_set": "posisi_magang.machine_learning.jobdesk",
       "jawaban_default": "Sebagai Machine Learning di Magang Jogja, jobdesk yang biasanya dikerjakan meliputi:\n- Melakukan pengumpulan dan pembersihan data (data preprocessing)\n- Membangun dan melatih model machine learning sesuai kebutuhan proyek\n- Melakukan evaluasi dan tuning performa model\n- Mengimplementasikan model ke dalam sistem/aplikasi\n- Mendokumentasikan proses dan hasil eksperimen model\n\nKalau tertarik daftar posisi ini, bisa langsung chat Admin Magang Jogja di 0895-2900-2944 ya.",
-      "keywords": [
-        "machine learning"
-      ]
+      "keywords": ["machine learning"]
     },
     {
       "intent": "tanya_skill_administrasi",
@@ -1983,11 +2034,7 @@
       ],
       "context_set": "posisi_magang.administrasi.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Administrasi, skill/kriteria yang biasanya dicari antara lain:\n- Teliti dan rapi dalam mengelola data\n- Bisa mengoperasikan Ms. Office (Excel & Word)\n- Komunikatif dan disiplin waktu\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "administrasi",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["administrasi", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_programmer",
@@ -2080,11 +2127,7 @@
       ],
       "context_set": "posisi_magang.programmer.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Programmer, skill/kriteria yang biasanya dicari antara lain:\n- Paham dasar bahasa pemrograman (HTML/CSS/JS, PHP, Python, atau lainnya)\n- Mau belajar hal baru dan terbiasa googling/debugging\n- Bisa kerja sama dalam tim (kolaborasi dengan UI/UX)\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "programmer",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["programmer", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_ui_ux_designer",
@@ -2175,11 +2218,7 @@
       ],
       "context_set": "posisi_magang.ui_ux_designer.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi UI/UX Designer, skill/kriteria yang biasanya dicari antara lain:\n- Bisa menggunakan tools desain seperti Figma/XD\n- Punya rasa estetika dan logika alur pengguna yang baik\n- Terbuka menerima revisi dan masukan\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "ui/ux designer",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["ui/ux designer", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_human_resource",
@@ -2270,11 +2309,7 @@
       ],
       "context_set": "posisi_magang.human_resource.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Human Resource, skill/kriteria yang biasanya dicari antara lain:\n- Komunikatif dan mudah bergaul\n- Teliti dalam mengelola data peserta/karyawan\n- Punya inisiatif dalam mengatur jadwal dan koordinasi\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "human resource",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["human resource", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_social_media_specialist",
@@ -2368,11 +2403,7 @@
       ],
       "context_set": "posisi_magang.social_media_specialist.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Social Media Specialist, skill/kriteria yang biasanya dicari antara lain:\n- Update dengan tren media sosial\n- Bisa menulis caption yang menarik\n- Familiar dengan Instagram, TikTok, atau platform lain\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "social media specialist",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["social media specialist", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_photographer__videographer",
@@ -2457,11 +2488,7 @@
       ],
       "context_set": "posisi_magang.photographer__videographer.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Photographer / Videographer, skill/kriteria yang biasanya dicari antara lain:\n- Bisa mengoperasikan kamera/HP untuk foto-video\n- Paham dasar komposisi dan pencahayaan\n- Bisa edit foto/video dasar (Lightroom, CapCut, Premiere, dll)\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "photographer / videographer",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["photographer / videographer", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_content_writer",
@@ -2556,11 +2583,7 @@
       ],
       "context_set": "posisi_magang.content_writer.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Content Writer, skill/kriteria yang biasanya dicari antara lain:\n- Suka menulis dan punya kosakata yang luas\n- Bisa riset topik dengan cepat\n- Teliti dalam ejaan dan tata bahasa\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "content writer",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["content writer", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_marketing_sales",
@@ -2653,11 +2676,7 @@
       ],
       "context_set": "posisi_magang.marketing_sales.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Marketing Sales, skill/kriteria yang biasanya dicari antara lain:\n- Komunikatif dan percaya diri\n- Suka berinteraksi dan menjalin relasi baru\n- Punya semangat mencapai target\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "marketing sales",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["marketing sales", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_desain_grafis",
@@ -2751,11 +2770,7 @@
       ],
       "context_set": "posisi_magang.desain_grafis.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Desain Grafis, skill/kriteria yang biasanya dicari antara lain:\n- Bisa menggunakan software desain (Canva, CorelDraw, Photoshop, Illustrator)\n- Punya rasa estetika visual yang baik\n- Terbuka menerima revisi desain\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "desain grafis",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["desain grafis", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_digital_marketing",
@@ -2838,11 +2853,7 @@
       ],
       "context_set": "posisi_magang.digital_marketing.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Digital Marketing, skill/kriteria yang biasanya dicari antara lain:\n- Paham dasar digital marketing/social media ads\n- Suka menganalisis data dan tren\n- Mau belajar tools baru (Meta Ads, Google Ads, dll)\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "digital marketing",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["digital marketing", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_marcomm__public_relation",
@@ -2931,11 +2942,7 @@
       ],
       "context_set": "posisi_magang.marcomm__public_relation.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Marcomm / Public Relation, skill/kriteria yang biasanya dicari antara lain:\n- Komunikatif dan pandai menulis pesan formal\n- Bisa menjaga hubungan baik dengan berbagai pihak\n- Teliti menjaga citra brand\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "marcomm / public relation",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["marcomm / public relation", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_host__presenter",
@@ -3019,11 +3026,7 @@
       ],
       "context_set": "posisi_magang.host__presenter.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Host / Presenter, skill/kriteria yang biasanya dicari antara lain:\n- Percaya diri tampil di depan kamera/publik\n- Komunikatif dan artikulasi jelas\n- Enerjik dan mudah berinteraksi dengan audiens\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "host / presenter",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["host / presenter", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_tiktok_creator",
@@ -3113,11 +3116,7 @@
       ],
       "context_set": "posisi_magang.tiktok_creator.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi TikTok Creator, skill/kriteria yang biasanya dicari antara lain:\n- Kreatif membuat ide konten pendek\n- Update dengan tren TikTok\n- Bisa syuting dan edit video sederhana\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "tiktok creator",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["tiktok creator", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_voice_over_talent",
@@ -3204,11 +3203,7 @@
       ],
       "context_set": "posisi_magang.voice_over_talent.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Voice Over Talent, skill/kriteria yang biasanya dicari antara lain:\n- Punya suara jelas dan intonasi yang enak didengar\n- Bisa membaca naskah dengan natural\n- Disiplin dalam proses rekaman\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "voice over talent",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["voice over talent", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_content_planner",
@@ -3302,11 +3297,7 @@
       ],
       "context_set": "posisi_magang.content_planner.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Content Planner, skill/kriteria yang biasanya dicari antara lain:\n- Terorganisir dan suka menyusun rencana/jadwal\n- Bisa berkoordinasi dengan banyak tim sekaligus\n- Paham alur produksi konten\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "content planner",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["content planner", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_project_manager",
@@ -3400,11 +3391,7 @@
       ],
       "context_set": "posisi_magang.project_manager.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Project Manager, skill/kriteria yang biasanya dicari antara lain:\n- Terbiasa mengatur banyak pekerjaan sekaligus (multitasking)\n- Komunikatif dan tegas dalam koordinasi tim\n- Bisa problem solving saat ada kendala proyek\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "project manager",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["project manager", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_las",
@@ -3486,11 +3473,7 @@
       ],
       "context_set": "posisi_magang.las.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Las, skill/kriteria yang biasanya dicari antara lain:\n- Paham dasar teknik pengelasan (atau mau dilatih dari dasar)\n- Teliti dan mengutamakan keselamatan kerja (K3)\n- Fisik yang mendukung pekerjaan lapangan\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "las",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["las", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_animasi",
@@ -3584,11 +3567,7 @@
       ],
       "context_set": "posisi_magang.animasi.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Animasi, skill/kriteria yang biasanya dicari antara lain:\n- Bisa menggunakan software animasi (After Effects, Blender, dll)\n- Punya kreativitas visual dan storytelling\n- Terbuka menerima revisi hasil animasi\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "animasi",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["animasi", "syarat", "skill"]
     },
     {
       "intent": "tanya_skill_machine_learning",
@@ -3670,11 +3649,7 @@
       ],
       "context_set": "posisi_magang.machine_learning.skill_dibutuhkan",
       "jawaban_default": "Untuk posisi Machine Learning, skill/kriteria yang biasanya dicari antara lain:\n- Paham dasar Python dan library ML (pandas, scikit-learn, dll)\n- Familiar dengan konsep statistik/data\n- Mau belajar dan eksperimen model baru\n\nGak perlu jago banget kok, yang penting mau belajar. Tim pembimbing bakal bantu dampingi selama magang.",
-      "keywords": [
-        "machine learning",
-        "syarat",
-        "skill"
-      ]
+      "keywords": ["machine learning", "syarat", "skill"]
     },
     {
       "intent": "tanya_syarat_pendaftaran",
@@ -5814,7 +5789,7 @@
         "kak kalo jago itung-itungan cocok posisi apa min"
       ],
       "context_set": "informasi_program.rekomendasi_posisi",
-      "jawaban_default": "Boleh cerita dulu jurusan atau minat kamu apa? Biar aku bisa kasih gambaran posisi yang paling cocok. Sebagai contoh gambaran umum: anak IT/Informatika biasanya cocok di Programmer atau Machine Learning, anak DKV/Desain cocok di UI/UX atau Desain Grafis, anak Komunikasi/Sastra cocok di Content Writer, Social Media Specialist, atau Marcomm/PR, anak Manajemen/Bisnis cocok di Marketing Sales atau Digital Marketing, dan anak Teknik/Vokasi bisa cocok di posisi Las. Tapi ini gak baku kok, kamu tetap boleh pilih sesuai minat pribadi walau beda jurusan, nanti dibantu arahkan admin juga.",
+      "jawaban_default": "Boleh cerita dulu jurusan atau minat kamu apa? Biar aku bisa kasih gambaran posisi yang paling cocok. Sebagai contoh gambaran umum:\n- IT / Informatika → cocok di Programmer atau Machine Learning\n- DKV / Desain → cocok di UI/UX Designer atau Desain Grafis\n- Komunikasi / Sastra → cocok di Content Writer, Social Media Specialist, atau Marcomm/PR\n- Manajemen / Bisnis → cocok di Marketing Sales atau Digital Marketing\n- Teknik / Vokasi → cocok di posisi Las\n\nTapi ini gak baku kok, kamu tetap boleh pilih sesuai minat pribadi walau beda jurusan, nanti dibantu arahkan admin juga.",
       "keywords": []
     },
     {
