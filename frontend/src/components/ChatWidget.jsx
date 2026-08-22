@@ -206,7 +206,7 @@ function ChatWidget() {
                     }
                   >
                     <div
-                      className={`rounded-2xl px-3 py-2 text-[0.85rem] leading-relaxed ${
+                      className={`whitespace-pre-line rounded-2xl px-3 py-2 text-[0.85rem] leading-relaxed ${
                         m.role === "user"
                           ? "bg-mj-green text-white"
                           : "bg-white text-mj-ink shadow"

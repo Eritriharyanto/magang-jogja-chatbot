@@ -84,29 +84,53 @@ SENSITIVE_INTENT_KEYWORDS = [
 ]
 
 
+def _find_tag(lower_message: str, groups: list[tuple[str, list[str]]]) -> str | None:
+    """Cari tag intent yang paling cocok dari sekumpulan (tag, keywords),
+    dicek 3 tingkat prioritas (biar gak salah nyantol ke intent lain):
+
+    1. EXACT: pesan user sama persis dengan salah satu keyword. Prioritas
+       tertinggi supaya mis. pesan "sertifikat" pasti ke tanya_sertifikat,
+       bukan ke intent lain yang keyword-nya cuma KEBETULAN mengandung kata
+       "sertifikat" di tengah frasa (mis. "selain sertifikat" di keyword
+       fasilitas/benefit).
+    2. FORWARD: keyword (frasa) ada di dalam pesan — ini cara matching yang
+       dipakai dari awal, cocok buat pesan yang panjang/lengkap.
+    3. FALLBACK: pesan (min. 4 karakter, biar kata ambigu kayak "wa"/"hr"
+       gak asal nyantol) ada di dalam salah satu keyword — nolong pesan
+       pendek 1-2 kata (mis. "lokasi", "divisi") yang keyword-nya berupa
+       frasa lebih panjang, sehingga forward match di atas gak kena.
+    """
+    for tag, keywords in groups:
+        if any(kw.lower() == lower_message for kw in keywords):
+            return tag
+    for tag, keywords in groups:
+        if any(kw.lower() in lower_message for kw in keywords):
+            return tag
+    if len(lower_message) >= 4:
+        for tag, keywords in groups:
+            if any(lower_message in kw.lower() for kw in keywords):
+                return tag
+    return None
+
+
 def match_sensitive_intent(message: str) -> str | None:
-    lower = message.lower()
-    for tag, keywords in SENSITIVE_INTENT_KEYWORDS:
-        if any(kw.lower() in lower for kw in keywords):
-            intent = state.INTENTS_BY_TAG.get(tag)
-            if intent:
-                return intent["jawaban_default"]
+    tag = _find_tag(message.lower(), SENSITIVE_INTENT_KEYWORDS)
+    if tag:
+        intent = state.INTENTS_BY_TAG.get(tag)
+        if intent:
+            return intent["jawaban_default"]
     return None
 
 
 def match_sensitive_intent_tag(message: str) -> str | None:
-    lower = message.lower()
-    for tag, keywords in SENSITIVE_INTENT_KEYWORDS:
-        if any(kw.lower() in lower for kw in keywords):
-            return tag
-    return None
+    return _find_tag(message.lower(), SENSITIVE_INTENT_KEYWORDS)
 
 
 GREETING_WORDS = [
     "halo", "hallo", "hai", "haii", "hi", "hey", "helo", "hello",
     "pagi", "siang", "sore", "malam", "met pagi", "met siang", "met sore", "met malam",
     "selamat pagi", "selamat siang", "selamat sore", "selamat malam",
-    "assalamualaikum", "permisi", "min", "kak", "woy", "woi",
+    "assalamualaikum", "permisi", "min", "kak", "woy", "woi", "info min",
 ]
 
 
@@ -182,8 +206,8 @@ STATIC_INTENT_KEYWORDS = [
     ]),
     ("tanya_posisi_lainnya", [
         "liat semua posisi magang lengkapnya", "cek lowongan terbaru",
-        "posisi magang selain itu ada lagi", "info detail tiap posisi",
-        "website resmi", "web resmi", "info lain soal magang jogja",
+        "posisi magang selain itu ada lagi", "kalau detail tiap posisi",
+        "website resmi", "web resmi", "informasi lain soal magang jogja",
     ]),
     ("tanya_gelombang_pendaftaran", [
         "gelombang pendaftaran", "pendaftaran dibuka kapan", "daftar bulan depan",
@@ -242,16 +266,36 @@ STATIC_INTENT_KEYWORDS = [
         "makasih", "makasi", "terima kasih", "terimakasih", "trims",
         "thanks", "thank you", "oke deh", "sip",
     ]),
+    # Ditaruh PALING TERAKHIR di list ini dengan sengaja: ini intent umum/generik
+    # (nanya "magang jogja itu apa" secara garis besar), jadi kalau pesan user
+    # ternyata juga nyerempet ke intent yang lebih spesifik (mis. sekalian nanya
+    # syarat/posisi), intent yang lebih spesifik itu harus menang duluan karena
+    # dicek lebih dulu (lihat urutan looping di _find_tag()).
+    ("tanya_info_umum_magang", [
+        "info magang jogja", "info magang", "magang jogja itu apa",
+        "magang jogja itu apaan", "magangjogja itu apa", "magangjogja.com itu apa",
+        "ceritain soal magang jogja", "ceritain magang jogja",
+        "jelasin magang jogja", "jelasin soal magang jogja",
+        "tentang magang jogja", "soal magang jogja", "program magang jogja ini",
+        "kenalin magang jogja", "gambaran umum magang jogja",
+        "overview magang jogja", "magang jogja ini tentang apa",
+        "magang jogja ini apa", "magang jogja tuh apa", "magang jogja itu gimana",
+        "apa itu magang jogja", "magang jogja itu resmi", "magang jogja terpercaya",
+        "magang jogja penipuan", "bukan penipuan kan", "visi misi magang jogja",
+        "tujuan magang jogja", "kenapa harus ikut magang jogja",
+        "bedanya magang jogja", "magang jogja bergerak di bidang",
+        "magang jogja ngapain aja", "isinya magang jogja apa aja",
+        "baru denger magang jogja", "penasaran sama magang jogja",
+    ]),
 ]
 
 
 def match_static_intent(message: str) -> str | None:
-    lower = message.lower()
-    for tag, keywords in STATIC_INTENT_KEYWORDS:
-        if any(kw in lower for kw in keywords):
-            intent = state.INTENTS_BY_TAG.get(tag)
-            if intent:
-                return intent["jawaban_default"]
+    tag = _find_tag(message.lower(), STATIC_INTENT_KEYWORDS)
+    if tag:
+        intent = state.INTENTS_BY_TAG.get(tag)
+        if intent:
+            return intent["jawaban_default"]
     return None
 
 
@@ -260,11 +304,7 @@ def match_static_intent_tag(message: str) -> str | None:
     (bukan teks jawaban). Dipakai buat nentuin apakah balasan ini perlu
     ditempeli elemen interaktif tambahan (tombol WA admin, tombol daftar
     posisi tertentu, dsb)."""
-    lower = message.lower()
-    for tag, keywords in STATIC_INTENT_KEYWORDS:
-        if any(kw in lower for kw in keywords):
-            return tag
-    return None
+    return _find_tag(message.lower(), STATIC_INTENT_KEYWORDS)
 
 
 def _slug_from_context_set(context_set):
@@ -290,7 +330,7 @@ def detect_chat_action(user_message: str, matched_tag: str | None) -> dict | Non
     if not matched_tag:
         return None
 
-    if matched_tag in ("tanya_kontak_admin", "tanya_cara_daftar", "komplain_keluhan"):
+    if matched_tag in ("tanya_kontak_admin", "tanya_cara_daftar", "komplain_keluhan", "tanya_info_umum_magang"):
         return {"type": "kontak"}
 
     if matched_tag.startswith("tanya_jobdesk_") or matched_tag.startswith("tanya_skill_"):
@@ -322,14 +362,23 @@ def _best_custom_intent(message: str) -> dict | None:
     tanya_jobdesk_* (yang cuma match nama posisinya saja)."""
     lower = message.lower()
     best_intent = None
-    best_hits = 0
+    best_score = 0
     for intent in state.INTENTS:
         keywords = intent.get("keywords") or []
         if not keywords:
             continue
-        hits = sum(1 for kw in keywords if kw.lower() in lower)
-        if hits and hits > best_hits:
-            best_hits = hits
+        score = 0
+        for kw in keywords:
+            kw_lower = kw.lower()
+            if kw_lower == lower:
+                score += 3  # exact match: paling kuat, gak boleh kalah sama
+                # keyword lain yang cuma kebetulan MENGANDUNG kata ini
+            elif kw_lower in lower:
+                score += 2  # keyword ketemu utuh di dalam pesan (normal case)
+            elif len(lower) >= 4 and lower in kw_lower:
+                score += 1  # fallback: pesan pendek ketemu di dalam keyword
+        if score > best_score:
+            best_score = score
             best_intent = intent
     return best_intent
 
