@@ -262,7 +262,7 @@ function ChatWidget() {
       <button
         type='button'
         onClick={() => setOpen((v) => !v)}
-        className='flex size-14 items-center justify-center rounded-full bg-mj-green text-sm font-semibold text-white shadow-xl transition-transform duration-300 hover:scale-105'
+        className='flex size-14 items-center justify-center rounded-full bg-mj-green-deep text-sm font-semibold text-white shadow-xl transition-transform duration-300 hover:scale-105'
         aria-label={open ? "Tutup chat" : "Buka chat"}
       >
         {open ? "×" : "Chat"}
