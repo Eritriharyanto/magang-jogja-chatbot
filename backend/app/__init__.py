@@ -2,11 +2,26 @@ from pathlib import Path
 
 from flask import Flask, send_from_directory
 from flask_cors import CORS
+from sqlalchemy import inspect, text
 
 from .config import Config
 from .extensions import db
 from . import state
 from . import db_chat
+
+
+def _ensure_konten_gambar_column():
+    """Migrasi ringan: db.create_all() cuma bikin tabel yang BELUM ada, gak
+    nambah kolom baru ke tabel yang sudah ada duluan. Jadi kalau db lama
+    (dari sebelum fitur upload gambar syarat/fasilitas ini) belum punya
+    kolom gambar_filename, tambahin manual lewat ALTER TABLE."""
+    insp = inspect(db.engine)
+    if "konten_item" not in insp.get_table_names():
+        return
+    existing_cols = {c["name"] for c in insp.get_columns("konten_item")}
+    if "gambar_filename" not in existing_cols:
+        with db.engine.begin() as conn:
+            conn.execute(text("ALTER TABLE konten_item ADD COLUMN gambar_filename VARCHAR(200)"))
 
 
 def create_app():
@@ -22,6 +37,7 @@ def create_app():
     with app.app_context():
         from . import models  # noqa: F401  (wajib di-import supaya create_all() tahu tabelnya)
         db.create_all()  # bikin tabel magangjog.db kalau belum ada
+        _ensure_konten_gambar_column()  # migrasi ringan buat db lama
 
         from .services.auth_service import ensure_default_admin
         ensure_default_admin()  # akun admin default: admin / admin123 (GANTI setelah login pertama)

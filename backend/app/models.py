@@ -58,16 +58,24 @@ class Divisi(db.Model):
 
 
 class KontenItem(db.Model):
-    """Satu baris teks untuk Syarat & Ketentuan atau Fasilitas (bisa dibedakan lewat `kategori`)."""
+    """Satu baris teks untuk Syarat & Ketentuan atau Fasilitas (bisa dibedakan lewat `kategori`).
+    Bisa juga dilengkapi 1 gambar opsional (mis. ikon ilustrasi per poin)."""
     __tablename__ = "konten_item"
 
     id = db.Column(db.Integer, primary_key=True)
     kategori = db.Column(db.String(20), nullable=False)   # "syarat" | "fasilitas"
     isi = db.Column(db.Text, nullable=False)
     urutan = db.Column(db.Integer, default=0)
+    gambar_filename = db.Column(db.String(200))            # nama file di /uploads/icons
 
     def to_dict(self):
-        return {"id": self.id, "isi": self.isi, "urutan": self.urutan}
+        return {
+            "id": self.id,
+            "isi": self.isi,
+            "urutan": self.urutan,
+            "gambar_filename": self.gambar_filename,
+            "gambar": f"/uploads/icons/{self.gambar_filename}" if self.gambar_filename else None,
+        }
 
 
 class AdminUser(db.Model):

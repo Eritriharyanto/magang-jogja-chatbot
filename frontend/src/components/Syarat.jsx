@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Bar from "@/components/Bar";
 import Reveal from "@/components/Reveal";
-import { getSyarat } from "@/lib/api";
+import { getSyarat, API_BASE } from "@/lib/api";
 import { SYARAT as SYARAT_FALLBACK } from "@/data/content";
 
 function Syarat() {
@@ -39,6 +39,13 @@ function Syarat() {
               delay={i * 100}
               className="flex flex-col items-center justify-end text-center"
             >
+              {s.gambar ? (
+                <img
+                  src={`${API_BASE}${s.gambar}`}
+                  alt=""
+                  className="mb-4 size-16 rounded-xl object-cover"
+                />
+              ) : null}
               <p className="max-w-xs whitespace-pre-line text-[0.95rem] leading-relaxed text-white">
                 {s.isi}
               </p>
