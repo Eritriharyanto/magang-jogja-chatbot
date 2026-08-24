@@ -84,6 +84,29 @@ SENSITIVE_INTENT_KEYWORDS = [
 ]
 
 
+def _keyword_matches(kw_lower: str, lower_message: str) -> bool:
+    """Forward match: True kalau `kw_lower` "ada di dalam" pesan.
+
+    Buat keyword yang PANJANG (>3 huruf, biasanya frasa beberapa kata kayak
+    "sistem kerja" atau "cara daftar"), substring biasa udah cukup aman —
+    kecil kemungkinan nyantol gak sengaja di tengah kata lain.
+
+    Tapi buat keyword PENDEK (<=3 huruf, mis. "wa", "sip", "las", "pkl"),
+    substring biasa BAHAYA: gampang ketemu nyempil di tengah kata yang gak
+    ada hubungannya sama sekali. Nemu kejadian nyata pas testing:
+    - keyword "wa" (buat kontak WhatsApp) nyantol di "kawasan", "jawaban",
+      "dewasa", "diawasin", "wawancara", "jawa", "bawaannya", dst.
+    - keyword "sip" (buat "makasih/oke sip") nyantol di "prinsip", "arsip".
+    - keyword "las" (posisi Las/pengelasan) nyantol di "kelas", "balas",
+      "jelas", "malas", "gelas" — kata-kata umum banget di bahasa Indonesia.
+    Makanya buat keyword pendek, wajib dicek sebagai KATA UTUH (dibatasi
+    word boundary \\b), bukan sekadar rangkaian huruf yang kebetulan nyempil.
+    """
+    if len(kw_lower) <= 3:
+        return re.search(rf"\b{re.escape(kw_lower)}\b", lower_message) is not None
+    return kw_lower in lower_message
+
+
 def _find_tag(lower_message: str, groups: list[tuple[str, list[str]]]) -> str | None:
     """Cari tag intent yang paling cocok dari sekumpulan (tag, keywords),
     dicek 3 tingkat prioritas (biar gak salah nyantol ke intent lain):
@@ -94,7 +117,8 @@ def _find_tag(lower_message: str, groups: list[tuple[str, list[str]]]) -> str | 
        "sertifikat" di tengah frasa (mis. "selain sertifikat" di keyword
        fasilitas/benefit).
     2. FORWARD: keyword (frasa) ada di dalam pesan — ini cara matching yang
-       dipakai dari awal, cocok buat pesan yang panjang/lengkap.
+       dipakai dari awal, cocok buat pesan yang panjang/lengkap. Keyword
+       pendek (<=3 huruf) dicek sebagai kata utuh, lihat _keyword_matches().
     3. FALLBACK: pesan (min. 4 karakter, biar kata ambigu kayak "wa"/"hr"
        gak asal nyantol) ada di dalam salah satu keyword — nolong pesan
        pendek 1-2 kata (mis. "lokasi", "divisi") yang keyword-nya berupa
@@ -104,7 +128,7 @@ def _find_tag(lower_message: str, groups: list[tuple[str, list[str]]]) -> str | 
         if any(kw.lower() == lower_message for kw in keywords):
             return tag
     for tag, keywords in groups:
-        if any(kw.lower() in lower_message for kw in keywords):
+        if any(_keyword_matches(kw.lower(), lower_message) for kw in keywords):
             return tag
     if len(lower_message) >= 4:
         for tag, keywords in groups:
@@ -130,7 +154,7 @@ GREETING_WORDS = [
     "halo", "hallo", "hai", "haii", "hi", "hey", "helo", "hello",
     "pagi", "siang", "sore", "malam", "met pagi", "met siang", "met sore", "met malam",
     "selamat pagi", "selamat siang", "selamat sore", "selamat malam",
-    "assalamualaikum", "permisi", "min", "kak", "woy", "woi", "info min",
+    "assalamualaikum", "permisi", "min", "kak", "woy", "woi",
 ]
 
 
@@ -181,6 +205,9 @@ STATIC_INTENT_KEYWORDS = [
     ("tanya_lokasi_magang", [
         "lokasi magang", "alamat kantornya", "penempatan magang", "khusus daerah jogja",
         "kantor/mitra magangnya dimana", "lokasi magangnya dimana", "daerah mana",
+        "lokasi dimana", "lokasinya dimana", "dimana lokasinya", "lokasi magang dimana",
+        "tempat magang dimana", "dimana lokasi magangnya", "dimana tempatnya",
+        "alamatnya dimana", "kantornya dimana", "magangnya dimana",
     ]),
     ("tanya_target_peserta", [
         "siswa smk", "siswa sma", "boleh daftar gak", "fresh graduate",
@@ -206,8 +233,8 @@ STATIC_INTENT_KEYWORDS = [
     ]),
     ("tanya_posisi_lainnya", [
         "liat semua posisi magang lengkapnya", "cek lowongan terbaru",
-        "posisi magang selain itu ada lagi", "kalau detail tiap posisi",
-        "website resmi", "web resmi", "informasi lain soal magang jogja",
+        "posisi magang selain itu ada lagi", "info detail tiap posisi",
+        "website resmi", "web resmi", "info lain soal magang jogja",
     ]),
     ("tanya_gelombang_pendaftaran", [
         "gelombang pendaftaran", "pendaftaran dibuka kapan", "daftar bulan depan",
@@ -351,6 +378,30 @@ def detect_chat_action(user_message: str, matched_tag: str | None) -> dict | Non
     return None
 
 
+_GENERIC_KEYWORD_MIN_INTENTS = 4
+"""Ambang batas buat nentuin sebuah keyword itu 'generik' (bukan pembeda
+posisi) apa 'spesifik' (nama posisi tertentu). Nama posisi kayak
+'programmer' cuma nongol di 2 intent (pasangan jobdesk+skill posisi itu
+sendiri), sedangkan kata umum kayak 'syarat'/'skill' sengaja ditaruh admin
+di SEMUA intent tanya_skill_* (19 posisi) biar bisa jadi bonus poin combo.
+4 dipilih supaya aman di antara keduanya (2 vs 19) dan gak hardcode
+kata-kata tertentu — jadi tetap kepakai walau admin nambah keyword generik
+lain lewat dashboard di masa depan."""
+
+
+def _generic_keywords(intents) -> set[str]:
+    """Keyword yang muncul di >= _GENERIC_KEYWORD_MIN_INTENTS intent
+    berbeda dianggap 'generik' — gak cukup buat nunjukin posisi/topik
+    tertentu kalau berdiri sendiri, cuma valid jadi BONUS kalau pesan juga
+    match keyword lain yang lebih spesifik dari intent yang sama."""
+    counts: dict[str, int] = {}
+    for intent in intents:
+        seen_in_this_intent = {kw.lower() for kw in (intent.get("keywords") or [])}
+        for kw in seen_in_this_intent:
+            counts[kw] = counts.get(kw, 0) + 1
+    return {kw for kw, cnt in counts.items() if cnt >= _GENERIC_KEYWORD_MIN_INTENTS}
+
+
 def _best_custom_intent(message: str) -> dict | None:
     """Cari intent dengan 'keywords' (diisi lewat admin panel) yang paling
     banyak cocok dengan pesan user. Dipakai buat intent per posisi magang
@@ -359,24 +410,42 @@ def _best_custom_intent(message: str) -> dict | None:
     lewat dashboard admin, TANPA perlu edit kode ini tiap ada posisi baru.
     Kalau pesan menyebut nama posisi + kata 'syarat'/'skill' sekaligus,
     intent tanya_skill_* menang karena hits-nya lebih banyak dibanding
-    tanya_jobdesk_* (yang cuma match nama posisinya saja)."""
+    tanya_jobdesk_* (yang cuma match nama posisinya saja).
+
+    PENTING: kata generik kayak 'syarat'/'skill' (lihat _generic_keywords())
+    cuma dihitung sebagai BONUS, bukan skor utama. Kalau pesan cuma
+    ngandung kata generik itu doang TANPA nyebut nama posisi apa pun (mis.
+    "yang jelas syaratnya apa aja"), skornya harus 0 — jangan sampai nyasar
+    ke posisi acak yang kebetulan urutannya paling awal. Bonus generik cuma
+    kepake kalau intent itu juga udah punya minimal 1 match dari keyword
+    SPESIFIK-nya sendiri (biasanya nama posisi)."""
     lower = message.lower()
+    generic = _generic_keywords(state.INTENTS)
     best_intent = None
     best_score = 0
     for intent in state.INTENTS:
         keywords = intent.get("keywords") or []
         if not keywords:
             continue
-        score = 0
+        anchor_score = 0  # dari keyword SPESIFIK (mis. nama posisi)
+        bonus_score = 0   # dari keyword GENERIK (mis. "syarat", "skill")
         for kw in keywords:
             kw_lower = kw.lower()
             if kw_lower == lower:
-                score += 3  # exact match: paling kuat, gak boleh kalah sama
+                pts = 3  # exact match: paling kuat, gak boleh kalah sama
                 # keyword lain yang cuma kebetulan MENGANDUNG kata ini
-            elif kw_lower in lower:
-                score += 2  # keyword ketemu utuh di dalam pesan (normal case)
+            elif _keyword_matches(kw_lower, lower):
+                pts = 2  # keyword ketemu utuh di dalam pesan (normal case)
             elif len(lower) >= 4 and lower in kw_lower:
-                score += 1  # fallback: pesan pendek ketemu di dalam keyword
+                pts = 1  # fallback: pesan pendek ketemu di dalam keyword
+            else:
+                continue
+            if kw_lower in generic:
+                bonus_score += pts
+            else:
+                anchor_score += pts
+        # bonus generik cuma dihitung kalau ada anchor spesifik yang match
+        score = anchor_score + (bonus_score if anchor_score > 0 else 0)
         if score > best_score:
             best_score = score
             best_intent = intent

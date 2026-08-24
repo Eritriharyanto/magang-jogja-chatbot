@@ -87,8 +87,7 @@
         "eh min punten mau nanya kah",
         "selamat malam ga sih min",
         "kak mau tanya ada admin gak ya",
-        "cek min halo ya",
-        "info min"
+        "cek min halo ya"
       ],
       "context_set": "informasi_program.sapaan",
       "jawaban_default": "Halo, selamat datang di Magang Jogja! 👋 Ada yang bisa dibantu seputar info magang, posisi yang tersedia, syarat pendaftaran, atau cara daftarnya? Tinggal tanya aja ya.",
@@ -4022,7 +4021,7 @@
         "halo min jam kerjanya gimana kalo WFO gak sih"
       ],
       "context_set": "informasi_program.sistem_kerja",
-      "jawaban_default": "Sebagian besar posisi magang di sini bersifat WFO (datang langsung ke lokasi/mitra kerja di Jogja). Tapi beberapa posisi seperti Programmer, Digital Marketing, atau Content Writer, ada kemungkinan WFH/hybrid tergantung kebutuhan tim. Soal ini bakal dikonfirmasi lagi pas proses seleksi ya.",
+      "jawaban_default": "Sebagian besar posisi magang di sini bersifat WFO (datang langsung ke lokasi/mitra kerja di Jogja). Tapi beberapa posisi seperti Programmer, Digital Marketing, atau Content Writer, ada kemungkinan WFH/hybrid tergantung kebutuhan tim. Soal ini bakal dikonfirmasi lagi pas proses seleksi ya.\n\nAda beberapa pilihan shift jam kerja:\n- Shift pagi: 06.30 - 13.00\n- Shift middle: 09.00 - 17.00\n- Shift siang: 13.00 - 21.00\n\nKerjanya 6 hari seminggu, libur 1 hari di hari Minggu, plus libur juga di tanggal merah.",
       "keywords": []
     },
     {
