@@ -18,7 +18,7 @@ function KnowledgePage() {
   const [tab, setTab] = useState("posisi"); // "posisi" | "info"
 
   return (
-    <AdminLayout title='Isi Pengetahuan Chatbot'>
+    <AdminLayout title='Isi Pengetahuan Chatbot dan Data jobdesk divisi'>
       <p className='mb-4 text-sm text-slate-500'>
         Ini data yang dipakai <b>chatbot AI</b> buat menjawab pertanyaan
         pengunjung — beda dari halaman <b>Posisi Magang</b> yang cuma ngatur

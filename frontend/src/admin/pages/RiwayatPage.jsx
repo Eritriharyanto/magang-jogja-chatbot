@@ -60,6 +60,11 @@ function RiwayatPage() {
                 >
                   <p className="text-sm font-semibold text-mj-ink">
                     {v.nama || `Pengunjung #${v.id}`}
+                    {v.no_telepon ? (
+                      <span className="ml-2 font-normal text-slate-400">
+                        · {v.no_telepon}
+                      </span>
+                    ) : null}
                   </p>
                   <p className="text-xs text-slate-400">
                     {v.jumlah_pesan} pesan · terakhir {formatDate(v.terakhir_aktif)}
@@ -77,7 +82,11 @@ function RiwayatPage() {
 
         <div className="rounded-xl bg-white shadow">
           <div className="border-b border-slate-100 px-5 py-3 text-sm font-semibold text-slate-500">
-            {selected ? `Transkrip — ${selected.nama || `Pengunjung #${selected.id}`}` : "Pilih pengunjung"}
+            {selected
+              ? `Transkrip — ${selected.nama || `Pengunjung #${selected.id}`}${
+                  selected.no_telepon ? ` (${selected.no_telepon})` : ""
+                }`
+              : "Pilih pengunjung"}
           </div>
           <div className="max-h-[70vh] space-y-3 overflow-y-auto p-5">
             {loadingTranscript ? <p className="text-sm text-slate-400">Memuat...</p> : null}
