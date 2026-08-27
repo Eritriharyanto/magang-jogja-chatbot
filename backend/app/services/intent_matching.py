@@ -75,6 +75,27 @@ def is_off_topic(message: str) -> bool:
     return False
 
 
+def has_domain_signal(message: str) -> bool:
+    """True kalau pesan mengandung minimal satu kata kunci yang berhubungan
+    sama topik magang/Magang Jogja (lihat state.DOMAIN_KEYWORDS).
+
+    Ini dipakai sebagai gerbang TERAKHIR sebelum manggil Ollama — beda sama
+    is_off_topic() di atas yang cuma nolak kalau pesannya cocok sama daftar
+    frasa off-topic yang eksplisit ditulis manual (OFF_TOPIC_PHRASES).
+    Masalahnya, daftar kayak gitu gak akan pernah lengkap — mustahil nulis
+    semua kemungkinan topik di luar magang satu-satu (mis. "dimana rumah
+    jokowi" gak match frasa off-topic manapun, jadi lolos ke Ollama padahal
+    jelas-jelas gak nyambung ke magang).
+
+    Jadi dibalik logikanya: daripada nebak-nebak apa aja yang OFF-topic,
+    kita cek pesannya ON-topic apa nggak (ada kata kunci magang/posisi/dll).
+    Kalau SAMA SEKALI gak ada sinyal domain magang, gak perlu buang
+    panggilan ke Ollama (yang bisa aja lagi lambat/mati) — langsung kasih
+    jawaban default yang aman."""
+    lower = message.lower()
+    return any(kw in lower for kw in state.DOMAIN_KEYWORDS)
+
+
 SENSITIVE_INTENT_KEYWORDS = [
     ("komplain_keluhan", [
         "komplain", "keluhan", "ngadu", "kecewa", "kurang memuaskan",

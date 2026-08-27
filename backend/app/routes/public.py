@@ -8,6 +8,7 @@ from .. import state
 from ..models import Divisi, KontenItem
 from ..services.intent_matching import (
     detect_chat_action,
+    has_domain_signal,
     is_off_topic,
     match_custom_intent_tag,
     match_sensitive_intent_tag,
@@ -144,23 +145,41 @@ def chat():
         aksi = detect_chat_action(pesan, matched_tag)
     else:
         aksi = None
-        try:
-            jawaban = ask_ollama(
-                host=current_app.config["OLLAMA_HOST"],
-                model=current_app.config["OLLAMA_MODEL"],
-                system_prompt=state.SYSTEM_PROMPT,
-                pesan_user=pesan,
-            )
-            sumber = "ollama"
-        except Exception:
-            # Ollama belum jalan / error koneksi -> jangan crash, kasih fallback
-            # yang tetap masuk akal buat user, dan tetap dicatat ke riwayat.
-            jawaban = (
-                "Maaf, aku belum bisa jawab pertanyaan itu secara detail saat ini. "
-                "Coba tanyakan hal seputar posisi magang, syarat, atau fasilitas, "
-                "atau langsung hubungi Admin Magang Jogja di 0895-2900-2944 ya."
-            )
-            sumber = "fallback_error"
+        if not has_domain_signal(pesan):
+            # Pesan sama sekali gak nyerempet topik magang (mis. "dimana
+            # rumah jokowi") -> langsung kasih jawaban default, JANGAN
+            # diarahkan ke Ollama. Selain lebih tepat (gak maksa jawab hal
+            # di luar topik), ini juga bikin bot tetap responsif walau
+            # Ollama-nya lagi mati/lambat.
+            fallback = state.INTENTS_BY_TAG.get("fallback_tidak_dikenali")
+            if fallback:
+                jawaban = fallback["jawaban_default"]
+                matched_tag = "fallback_tidak_dikenali"
+            else:
+                jawaban = (
+                    "Maaf, aku belum bisa jawab pertanyaan itu secara detail saat ini. "
+                    "Coba tanyakan hal seputar posisi magang, syarat, atau fasilitas, "
+                    "atau langsung hubungi Admin Magang Jogja di 0895-2900-2944 ya."
+                )
+            sumber = "off_topic_no_domain_signal"
+        else:
+            try:
+                jawaban = ask_ollama(
+                    host=current_app.config["OLLAMA_HOST"],
+                    model=current_app.config["OLLAMA_MODEL"],
+                    system_prompt=state.SYSTEM_PROMPT,
+                    pesan_user=pesan,
+                )
+                sumber = "ollama"
+            except Exception:
+                # Ollama belum jalan / error koneksi -> jangan crash, kasih fallback
+                # yang tetap masuk akal buat user, dan tetap dicatat ke riwayat.
+                jawaban = (
+                    "Maaf, aku belum bisa jawab pertanyaan itu secara detail saat ini. "
+                    "Coba tanyakan hal seputar posisi magang, syarat, atau fasilitas, "
+                    "atau langsung hubungi Admin Magang Jogja di 0895-2900-2944 ya."
+                )
+                sumber = "fallback_error"
 
     db_chat.log_message(visitor_id, "bot", jawaban, source=sumber)
 
