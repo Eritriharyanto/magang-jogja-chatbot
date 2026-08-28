@@ -106,6 +106,9 @@ export const deleteIntent = (nama) =>
 export const listRiwayat = () => adminFetch("/api/admin/riwayat");
 export const getTranscript = (visitorId) =>
   adminFetch(`/api/admin/riwayat/${visitorId}`);
+export const deleteRiwayat = (visitorId) =>
+  adminFetch(`/api/admin/riwayat/${visitorId}`, { method: "DELETE" });
+export const exportRiwayat = () => adminFetch("/api/admin/riwayat/export");
 
 // --- Knowledge base (isi pengetahuan chatbot AI) ---
 export const getKnowledge = () => adminFetch("/api/admin/knowledge");

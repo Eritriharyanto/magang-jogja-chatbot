@@ -13,7 +13,20 @@ def list_visitors():
     return jsonify(db_chat.list_visitors())
 
 
+@bp.get("/export")
+@admin_login_required
+def export_all():
+    return jsonify(db_chat.get_all_transcripts())
+
+
 @bp.get("/<int:visitor_id>")
 @admin_login_required
 def transcript(visitor_id):
     return jsonify(db_chat.get_transcript(visitor_id))
+
+
+@bp.delete("/<int:visitor_id>")
+@admin_login_required
+def delete_visitor(visitor_id):
+    db_chat.delete_visitor(visitor_id)
+    return "", 204

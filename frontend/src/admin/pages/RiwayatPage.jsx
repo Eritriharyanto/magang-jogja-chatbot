@@ -11,6 +11,35 @@ function formatDate(iso) {
   }
 }
 
+function downloadAllTranscripts(rows) {
+  const grouped = new Map();
+  rows.forEach((r) => {
+    if (!grouped.has(r.visitor_id)) {
+      grouped.set(r.visitor_id, { nama: r.nama, no_telepon: r.no_telepon, messages: [] });
+    }
+    if (r.role) {
+      grouped.get(r.visitor_id).messages.push(r);
+    }
+  });
+
+  const lines = [];
+  grouped.forEach((v, id) => {
+    lines.push(`=== ${v.nama || `Pengunjung #${id}`}${v.no_telepon ? ` (${v.no_telepon})` : ""} ===`);
+    v.messages.forEach((m) => {
+      lines.push(`[${formatDate(m.created_at)}] ${m.role === "user" ? "User" : "Bot"}: ${m.content}`);
+    });
+    lines.push("");
+  });
+
+  const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `riwayat-semua-${new Date().toISOString().slice(0, 10)}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 function RiwayatPage() {
   const [visitors, setVisitors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,6 +47,7 @@ function RiwayatPage() {
   const [selected, setSelected] = useState(null);
   const [transcript, setTranscript] = useState([]);
   const [loadingTranscript, setLoadingTranscript] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     adminApi
@@ -37,6 +67,29 @@ function RiwayatPage() {
       .finally(() => setLoadingTranscript(false));
   }
 
+  function handleDownloadAll() {
+    setExporting(true);
+    adminApi
+      .exportRiwayat()
+      .then(downloadAllTranscripts)
+      .catch((e) => setError(e.message))
+      .finally(() => setExporting(false));
+  }
+
+  function handleDelete(visitor) {
+    if (!confirm(`Hapus riwayat ${visitor.nama || `Pengunjung #${visitor.id}`}?`)) return;
+    adminApi
+      .deleteRiwayat(visitor.id)
+      .then(() => {
+        setVisitors((prev) => prev.filter((v) => v.id !== visitor.id));
+        if (selected?.id === visitor.id) {
+          setSelected(null);
+          setTranscript([]);
+        }
+      })
+      .catch((e) => setError(e.message));
+  }
+
   return (
     <AdminLayout title="Riwayat Chat">
       {error ? (
@@ -45,16 +98,28 @@ function RiwayatPage() {
 
       <div className="grid gap-6 lg:grid-cols-[1fr_1.3fr]">
         <div className="rounded-xl bg-white shadow">
-          <div className="border-b border-slate-100 px-5 py-3 text-sm font-semibold text-slate-500">
-            {loading ? "Memuat..." : `${visitors.length} pengunjung`}
+          <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3">
+            <span className="text-sm font-semibold text-slate-500">
+              {loading ? "Memuat..." : `${visitors.length} pengunjung`}
+            </span>
+            {!loading && visitors.length > 0 ? (
+              <button
+                type="button"
+                onClick={handleDownloadAll}
+                disabled={exporting}
+                className="text-xs font-medium text-mj-green hover:underline disabled:opacity-50"
+              >
+                {exporting ? "Menyiapkan..." : "Download Semua"}
+              </button>
+            ) : null}
           </div>
           <ul className="max-h-[70vh] divide-y divide-slate-100 overflow-y-auto">
             {visitors.map((v) => (
-              <li key={v.id}>
+              <li key={v.id} className="relative">
                 <button
                   type="button"
                   onClick={() => openTranscript(v)}
-                  className={`block w-full px-5 py-3 text-left hover:bg-slate-50 ${
+                  className={`block w-full px-5 py-3 pr-16 text-left hover:bg-slate-50 ${
                     selected?.id === v.id ? "bg-mj-green/5" : ""
                   }`}
                 >
@@ -69,6 +134,13 @@ function RiwayatPage() {
                   <p className="text-xs text-slate-400">
                     {v.jumlah_pesan} pesan · terakhir {formatDate(v.terakhir_aktif)}
                   </p>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDelete(v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-red-400 hover:text-red-600"
+                >
+                  Hapus
                 </button>
               </li>
             ))}
