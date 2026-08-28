@@ -100,3 +100,26 @@ def get_transcript(visitor_id: int):
     ).fetchall()
     conn.close()
     return [dict(r) for r in rows]
+
+
+def get_all_transcripts():
+    conn = get_conn()
+    rows = conn.execute(
+        """
+        SELECT v.id AS visitor_id, v.nama, v.no_telepon,
+               m.role, m.content, m.source, m.created_at
+        FROM visitor v
+        LEFT JOIN chat_message m ON m.visitor_id = v.id
+        ORDER BY v.id ASC, m.id ASC
+        """
+    ).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def delete_visitor(visitor_id: int):
+    conn = get_conn()
+    conn.execute("DELETE FROM chat_message WHERE visitor_id = ?", (visitor_id,))
+    conn.execute("DELETE FROM visitor WHERE id = ?", (visitor_id,))
+    conn.commit()
+    conn.close()
