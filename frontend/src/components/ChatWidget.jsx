@@ -11,6 +11,21 @@ function waLink(prefillText) {
   return `https://wa.me/${digits}?text=${text}`;
 }
 
+function actionButtons(aksi) {
+  if (!aksi) return [];
+  if (aksi.type === "daftar") {
+    return [{ href: aksi.url, label: aksi.label }];
+  }
+  if (aksi.type === "lokasi") {
+    return [
+      { href: aksi.maps_url, label: "Lihat Lokasi di Google Maps" },
+      { href: waLink(), label: "Chat Admin via WhatsApp" },
+    ];
+  }
+  // "kontak" (dan tipe lain yang belum dikenal) -> tombol WA sebagai default
+  return [{ href: waLink(), label: "Chat Admin via WhatsApp" }];
+}
+
 function welcomeMessage(nama) {
   return {
     role: "bot",
@@ -215,16 +230,19 @@ function ChatWidget() {
                       {m.text}
                     </div>
                     {m.role === "bot" && m.aksi ? (
-                      <a
-                        href={m.aksi.type === "daftar" ? m.aksi.url : waLink()}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='mt-1.5 inline-block rounded-full bg-mj-yellow px-3 py-1.5 text-[0.75rem] font-semibold text-mj-ink shadow hover:brightness-95'
-                      >
-                        {m.aksi.type === "daftar"
-                          ? m.aksi.label
-                          : "Chat Admin via WhatsApp"}
-                      </a>
+                      <div className='mt-1.5 flex flex-wrap gap-1.5'>
+                        {actionButtons(m.aksi).map((btn, j) => (
+                          <a
+                            key={j}
+                            href={btn.href}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            className='inline-block rounded-full bg-mj-yellow px-3 py-1.5 text-[0.75rem] font-semibold text-mj-ink shadow hover:brightness-95'
+                          >
+                            {btn.label}
+                          </a>
+                        ))}
+                      </div>
                     ) : null}
                   </div>
                 ))}
@@ -262,7 +280,7 @@ function ChatWidget() {
       <button
         type='button'
         onClick={() => setOpen((v) => !v)}
-        className='flex size-14 items-center justify-center rounded-full bg-mj-green-deep text-sm font-semibold text-white shadow-xl transition-transform duration-300 hover:scale-105'
+        className='flex size-14 items-center justify-center rounded-full bg-mj-green text-sm font-semibold text-white shadow-xl transition-transform duration-300 hover:scale-105'
         aria-label={open ? "Tutup chat" : "Buka chat"}
       >
         {open ? "×" : "Chat"}
