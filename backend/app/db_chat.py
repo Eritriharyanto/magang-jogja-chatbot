@@ -102,24 +102,39 @@ def get_transcript(visitor_id: int):
     return [dict(r) for r in rows]
 
 
-def get_all_transcripts():
-    conn = get_conn()
-    rows = conn.execute(
-        """
-        SELECT v.id AS visitor_id, v.nama, v.no_telepon,
-               m.role, m.content, m.source, m.created_at
-        FROM visitor v
-        LEFT JOIN chat_message m ON m.visitor_id = v.id
-        ORDER BY v.id ASC, m.id ASC
-        """
-    ).fetchall()
-    conn.close()
-    return [dict(r) for r in rows]
-
-
-def delete_visitor(visitor_id: int):
+def delete_visitor(visitor_id: int) -> bool:
+    """Hapus 1 pengunjung beserta semua pesan chat-nya. Return True kalau
+    memang ada baris yang kehapus (visitor_id valid)."""
     conn = get_conn()
     conn.execute("DELETE FROM chat_message WHERE visitor_id = ?", (visitor_id,))
-    conn.execute("DELETE FROM visitor WHERE id = ?", (visitor_id,))
+    cur = conn.execute("DELETE FROM visitor WHERE id = ?", (visitor_id,))
     conn.commit()
+    deleted = cur.rowcount > 0
     conn.close()
+    return deleted
+
+
+def delete_visitors(visitor_ids: list[int]) -> int:
+    """Hapus banyak pengunjung sekaligus (buat fitur select-all/centang
+    beberapa). Return jumlah pengunjung yang beneran kehapus."""
+    if not visitor_ids:
+        return 0
+    conn = get_conn()
+    placeholders = ",".join("?" for _ in visitor_ids)
+    conn.execute(f"DELETE FROM chat_message WHERE visitor_id IN ({placeholders})", visitor_ids)
+    cur = conn.execute(f"DELETE FROM visitor WHERE id IN ({placeholders})", visitor_ids)
+    conn.commit()
+    deleted = cur.rowcount
+    conn.close()
+    return deleted
+
+
+def delete_all_visitors() -> int:
+    """Hapus SEMUA riwayat chat & pengunjung. Return jumlah pengunjung yang kehapus."""
+    conn = get_conn()
+    conn.execute("DELETE FROM chat_message")
+    cur = conn.execute("DELETE FROM visitor")
+    conn.commit()
+    deleted = cur.rowcount
+    conn.close()
+    return deleted

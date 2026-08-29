@@ -108,7 +108,19 @@ export const getTranscript = (visitorId) =>
   adminFetch(`/api/admin/riwayat/${visitorId}`);
 export const deleteRiwayat = (visitorId) =>
   adminFetch(`/api/admin/riwayat/${visitorId}`, { method: "DELETE" });
-export const exportRiwayat = () => adminFetch("/api/admin/riwayat/export");
+export const bulkDeleteRiwayat = (ids) =>
+  adminFetch("/api/admin/riwayat/bulk-delete", {
+    method: "POST",
+    body: JSON.stringify({ ids }),
+  });
+export const deleteAllRiwayat = () =>
+  adminFetch("/api/admin/riwayat/all", { method: "DELETE" });
+// Bukan JSON — link download langsung (browser yang handle attachment-nya,
+// sesi login tetap kepakai karena ini navigasi biasa, bukan fetch()).
+export const exportRiwayatUrl = (visitorId) =>
+  `${API_BASE}/api/admin/riwayat/${visitorId}/export`;
+export const exportAllRiwayatUrl = () =>
+  `${API_BASE}/api/admin/riwayat/export-all`;
 
 // --- Knowledge base (isi pengetahuan chatbot AI) ---
 export const getKnowledge = () => adminFetch("/api/admin/knowledge");

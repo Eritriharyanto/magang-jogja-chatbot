@@ -9,8 +9,17 @@ di modul ini, supaya alur & gaya kodenya konsisten dengan contoh yang
 diberikan: keyword list eksplisit per intent, dicek pakai substring match.
 """
 import re
+from urllib.parse import quote
 
 from .. import state
+
+# Alamat penempatan/sekretariat Magang Jogja yang bisa didatangi langsung.
+# Dipakai buat tombol "Lihat Lokasi di Google Maps" di jawaban tanya_lokasi_magang.
+ALAMAT_KANTOR = (
+    "Seven INC kamar 2, Jl. Raya Janti Gg. Harjuna No.59, Jaranan, Karangjambe, "
+    "Kec. Banguntapan, Yogyakarta, Daerah Istimewa Yogyakarta 55281"
+)
+GOOGLE_MAPS_URL = "https://www.google.com/maps/search/?api=1&query=" + quote(ALAMAT_KANTOR)
 
 OFF_TOPIC_PHRASES = [
     "nyanyi", "lagu", "film", "nonton", "series", "netflix",
@@ -378,8 +387,16 @@ def detect_chat_action(user_message: str, matched_tag: str | None) -> dict | Non
     if not matched_tag:
         return None
 
-    if matched_tag in ("tanya_kontak_admin", "tanya_cara_daftar", "komplain_keluhan", "tanya_info_umum_magang"):
+    if matched_tag in (
+        "tanya_kontak_admin",
+        "tanya_cara_daftar",
+        "komplain_keluhan",
+        "tanya_info_umum_magang",
+    ):
         return {"type": "kontak"}
+
+    if matched_tag == "tanya_lokasi_magang":
+        return {"type": "lokasi", "maps_url": GOOGLE_MAPS_URL}
 
     if matched_tag.startswith("tanya_jobdesk_") or matched_tag.startswith("tanya_skill_"):
         intent = state.INTENTS_BY_TAG.get(matched_tag)
