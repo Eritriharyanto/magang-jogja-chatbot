@@ -3,8 +3,12 @@
 Dua mode, sama seperti referensi:
 - Mode form/terarah: edit khusus daftar `posisi_magang` (list yang paling
   sering berubah — nama posisi, deskripsi, jobdesk, skill).
-- Mode lanjutan: kirim seluruh objek JSON buat overwrite penuh
-  `informasi_program` (field yang jarang berubah: kontak, syarat, dll)."""
+- Info program: kirim seluruh objek JSON buat overwrite penuh
+  `informasi_program` (field yang jarang berubah: kontak, syarat, dll).
+  Di frontend field-field ini ditampilkan sebagai form biasa per-field
+  (bukan textarea JSON mentah) supaya gampang diedit orang awam, tapi tetap
+  dikirim ke endpoint ini sebagai satu objek JSON utuh — endpoint-nya
+  sendiri gak berubah, cukup terima objek lengkap seperti biasa."""
 import os
 
 from flask import Blueprint, current_app, request, jsonify
@@ -36,7 +40,10 @@ def get_all():
 @bp.put("/informasi-program")
 @admin_login_required
 def update_informasi_program():
-    """Mode lanjutan: overwrite penuh objek informasi_program dgn JSON mentah."""
+    """Terima objek `informasi_program` LENGKAP (bukan partial) dan overwrite
+    penuh ke knowledge_base.json. Frontend selalu ngirim objek utuh (baik
+    lewat form per-field maupun mode JSON lanjutan), jadi endpoint ini gak
+    perlu tahu bedanya."""
     data = request.get_json(force=True) or {}
     kb = dict(state.KB)
     kb["informasi_program"] = data
