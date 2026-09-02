@@ -88,18 +88,170 @@ backend/
             └── pengaturan.py         # ganti password admin
 ```
 
-## Cara kerja chatbot
+## Alur Kerja Chatbot
 
-1. Pesan user masuk lewat `POST /api/chat`.
-2. `intent_matching.py` coba cocokkan pesan dengan `contoh_pertanyaan` di
-   `intents.json` pakai fuzzy matching (skor 0-100). Kalau skor >= 72,
-   langsung balas pakai `jawaban_default` intent itu — **tanpa panggil
-   Ollama sama sekali** (cepat, gratis, konsisten).
-3. Kalau tidak ada yang cocok, pesan dilempar ke Ollama, dengan system
-   prompt hasil ringkasan `knowledge_base.json` (dibangun oleh
-   `kb_summary.py`) supaya jawaban AI tetap berpijak ke data asli.
-4. Semua pesan (baik dari user maupun bot) dicatat ke `chat_history.db`,
-   bisa dilihat admin di menu **Riwayat Chat**.
+Semua logika ada di dua tempat: endpoint `POST /api/chat`
+(`app/routes/public.py`) sebagai "pengatur alur", dan
+`app/services/intent_matching.py` sebagai kumpulan fungsi pengecek yang
+dipanggil satu-satu secara berurutan. Setiap request chat **wajib** sudah
+punya identitas pengunjung (nama + no. WA) — kalau belum, endpoint langsung
+menolak sebelum masuk ke logika jawaban.
+
+### Diagram alur
+
+```
+                POST /api/chat { pesan }
+                          |
+                          v
+        ┌──────────────────────────────────┐
+        │ 1. session["visitor_nama"] ada?   │
+        └──────────────────────────────────┘
+             |  tidak                 |  ya
+             v                        v
+   400 IDENTITY_REQUIRED     2. log pesan user -> chat_history.db
+   (frontend suruh isi                |
+    form nama+WA lagi)                v
+                          ┌──────────────────────────────┐
+                          │ 3. is_off_topic(pesan)?       │──yes──> jawaban = fallback_tidak_dikenali
+                          └──────────────────────────────┘         sumber = "off_topic"
+                                       | tidak
+                                       v
+                          ┌──────────────────────────────┐
+                          │ 4. try_greeting_answer(pesan)?│──yes──> jawaban = balasan sapaan
+                          └──────────────────────────────┘         sumber = "greeting"
+                                       | tidak
+                                       v
+                          ┌──────────────────────────────────┐
+                          │ 5. match_sensitive_intent_tag()?  │──yes──> jawaban = intent sensitif
+                          └──────────────────────────────────┘         sumber = "sensitive"
+                                       | tidak
+                                       v
+                          ┌──────────────────────────────────┐
+                          │ 6. match_static_intent_tag()?     │──yes──> jawaban = intent statis (intents.json)
+                          │    (fuzzy match RapidFuzz,        │         sumber = "static"
+                          │    skor >= INTENT_MATCH_THRESHOLD)│
+                          └──────────────────────────────────┘
+                                       | tidak
+                                       v
+                          ┌──────────────────────────────────┐
+                          │ 7. match_custom_intent_tag()?     │──yes──> jawaban = intent custom admin
+                          └──────────────────────────────────┘         sumber = "custom"
+                                       | tidak
+                                       v
+                          ┌──────────────────────────────────┐
+                          │ 8. has_domain_signal(pesan)?      │
+                          └──────────────────────────────────┘
+                             | tidak                | ya
+                             v                       v
+                 jawaban = fallback        9. ask_ollama(SYSTEM_PROMPT, pesan)
+                 default (Ollama TIDAK        |                    |
+                 dipanggil)                   | sukses             | error/timeout/Ollama mati
+                 sumber =                     v                    v
+                 "off_topic_no_domain_signal" jawaban = balasan   jawaban = fallback default
+                                              Ollama               sumber = "fallback_error"
+                                              sumber = "ollama"
+                                       |
+                                       v
+                    10. detect_chat_action(pesan, matched_tag) -> field "aksi" (opsional)
+                                       |
+                                       v
+                    11. log jawaban bot -> chat_history.db (simpan juga "sumber")
+                                       |
+                                       v
+                    12. return JSON { jawaban, sumber, aksi }
+```
+
+### Penjelasan tiap langkah
+
+1. **Cek identitas sesi.** `session["visitor_nama"]` di-set sebelumnya lewat
+   `POST /api/visitor` (form nama + no. WhatsApp di widget chat frontend).
+   Kalau kosong, chat ditolak dengan `code: "IDENTITY_REQUIRED"` supaya
+   frontend tahu harus menampilkan form registrasi lagi.
+2. **Catat pesan user.** Setiap pesan masuk selalu dicatat dulu ke
+   `chat_history.db` lewat `db_chat.log_message(visitor_id, "user", pesan)`,
+   terlepas dari apapun hasil jawabannya nanti — supaya riwayat lengkap
+   walau bot gagal jawab.
+3. **`is_off_topic(pesan)`** — filter cepat untuk pesan yang jelas-jelas di
+   luar konteks (mis. spam/uji-coba/karakter acak). Kalau kena, langsung
+   pakai jawaban intent `fallback_tidak_dikenali` dari `intents.json`,
+   tanpa proses lebih jauh.
+4. **`try_greeting_answer(pesan)`** — deteksi sapaan umum ("halo", "pagi",
+   "assalamualaikum", dst) lewat pencocokan kata kunci, balas dengan
+   sapaan ramah sebelum masuk ke pencarian intent yang lebih berat.
+5. **`match_sensitive_intent_tag(pesan)`** — cek dulu apakah pesan
+   menyinggung topik sensitif (di luar wewenang bot menjawab bebas, mis.
+   SARA, isu kontroversial, dsb) supaya bot tidak "asal jawab" lewat AI.
+6. **`match_static_intent_tag(pesan)`** — inti dari chatbot statis:
+   `intent_matching.py` membandingkan pesan user dengan seluruh
+   `contoh_pertanyaan` di setiap intent (`intents.json`) memakai
+   **fuzzy string matching** dari library **RapidFuzz**. Kalau skor
+   kemiripan tertinggi ≥ `INTENT_MATCH_THRESHOLD` (default **72**, bisa
+   diubah di `config.py`), tag intent itu dianggap "cocok" dan langsung
+   dipakai jawabannya — **tanpa memanggil Ollama sama sekali** (cepat,
+   gratis/tanpa beban komputasi, dan konsisten karena dikontrol admin).
+7. **`match_custom_intent_tag(pesan)`** — sama prinsipnya dengan langkah 6,
+   tapi untuk intent tambahan yang khusus dibuat admin lewat dashboard
+   (di luar set intent bawaan), dicek terpisah supaya lebih fleksibel
+   untuk dikelola/di-nonaktifkan.
+8. **`has_domain_signal(pesan)`** — kalau sampai di sini artinya tidak ada
+   satupun intent yang cocok. Sebelum melempar ke Ollama (yang lebih berat
+   & lambat), backend cek dulu apakah pesan **masih mengandung kata kunci
+   seputar topik magang** sama sekali. Kalau tidak (mis. "dimana rumah
+   jokowi", "1+1 berapa"), backend langsung balas jawaban fallback default
+   **tanpa** memanggil Ollama — ini penting supaya bot tetap responsif
+   cepat dan tidak membuang resource untuk pertanyaan yang jelas di luar
+   topik, sekaligus tetap jalan normal walau Ollama sedang mati/lambat.
+9. **`ask_ollama(...)`** — kalau pesan masih relevan dengan topik magang
+   tapi tidak cocok intent manapun (pertanyaan bebas/kompleks), baru
+   di-lempar ke **Ollama** (`services/ollama_client.py`) memakai
+   `SYSTEM_PROMPT` yang sudah disiapkan saat server start/reload
+   (`state.SYSTEM_PROMPT`, hasil ringkasan `knowledge_base.json` oleh
+   `kb_summary.py`). Ini membuat jawaban AI tetap berpijak ke data program
+   & posisi magang yang sebenarnya, bukan mengarang bebas. Kalau Ollama
+   gagal dipanggil (server mati, timeout, error koneksi), exception
+   ditangkap dan backend tetap membalas dengan jawaban fallback yang sopan
+   (`sumber: "fallback_error"`) — **tidak pernah crash** ke user.
+10. **`detect_chat_action(pesan, matched_tag)`** — opsional, mendeteksi
+    apakah dari pesan/tag yang cocok bisa disarankan sebuah "aksi" cepat ke
+    frontend, misalnya arahkan user melihat halaman detail posisi tertentu,
+    atau tampilkan tombol kontak WhatsApp admin.
+11. **Catat jawaban bot.** Jawaban akhir (apapun sumbernya) dicatat ke
+    `chat_history.db` lewat `log_message(visitor_id, "bot", jawaban, source=sumber)`,
+    sehingga admin bisa melihat riwayat lengkap dan menganalisis dari
+    sumber mana saja bot paling sering menjawab (menu **Riwayat Chat**).
+12. **Response akhir** dikembalikan sebagai JSON
+    `{ jawaban, sumber, aksi }` ke frontend, yang lalu ditampilkan sebagai
+    bubble chat baru di widget.
+
+### Kenapa urutannya seperti ini?
+
+Urutan dirancang dari yang **paling murah & pasti** ke yang **paling
+berat & fleksibel**:
+
+| Urutan | Metode | Biaya komputasi | Konsistensi jawaban |
+|---|---|---|---|
+| 1–7 | Rule-based / fuzzy match (intents.json) | Sangat murah, instan | Pasti & bisa dikontrol penuh oleh admin |
+| 8 | Filter domain (keyword check) | Murah, instan | Mencegah Ollama dipanggil sia-sia |
+| 9 | Ollama (LLM lokal) | Lebih berat, butuh model jalan | Fleksibel tapi bisa bervariasi |
+
+Sehingga mayoritas pertanyaan umum (syarat, fasilitas, cara daftar, jam
+operasional, dst) akan dijawab lewat intent statis yang cepat & konsisten,
+dan Ollama hanya dipakai sebagai "jaring pengaman" untuk pertanyaan yang
+lebih spesifik/tidak terduga tapi masih relevan dengan topik magang.
+
+### Bagaimana admin mengubah perilaku chatbot
+
+- Tambah/edit/hapus **FAQ statis** → menu **Intents** di dashboard → simpan
+  ke `intents.json` → `state.reload_runtime_state()` dipanggil otomatis →
+  perubahan langsung aktif di request berikutnya, **tanpa restart server**.
+- Tambah/edit **info program & posisi magang** yang jadi konteks Ollama →
+  menu **Knowledge** di dashboard → simpan ke `knowledge_base.json` →
+  `kb_summary.py` meringkas ulang jadi `SYSTEM_PROMPT` baru → juga langsung
+  aktif tanpa restart.
+- Naikkan/turunkan **sensitivitas fuzzy match** → ubah
+  `INTENT_MATCH_THRESHOLD` di `app/config.py` (default 72; makin tinggi
+  makin ketat/mirip persis, makin rendah makin longgar tapi rawan salah
+  cocok).
 
 ## Panel admin (dikonsumsi dari dashboard React, bukan Flask template)
 
@@ -129,3 +281,7 @@ backend/
 - **CORS error dari frontend React** → pastikan `CORS_ORIGIN` di `.env`
   sama persis dengan URL dev server frontend (`http://localhost:5173`
   default Vite).
+- **Intent statis kok gak kepanggil terus?** → cek skor
+  `INTENT_MATCH_THRESHOLD` di `app/config.py`, atau tambahkan lebih banyak
+  variasi `contoh_pertanyaan` di intent terkait lewat menu **Intents**
+  supaya fuzzy match lebih mudah menemukan kecocokan.
