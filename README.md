@@ -22,6 +22,8 @@ magang-jogja-chatbot/
 6. [Alur End-to-End (Frontend ⇄ Backend)](#alur-end-to-end-frontend--backend)
 7. [Cara Menjalankan (Frontend + Backend)](#cara-menjalankan-frontend--backend)
 8. [Ringkasan Endpoint API](#ringkasan-endpoint-api)
+9. [Tim Pengembang](#tim-pengembang)
+10. [Lisensi](#lisensi)
 
 ---
 
@@ -379,6 +381,33 @@ lebih dulu.
 | GET | `/api/admin/riwayat/<visitor_id>/export` | Export transkrip 1 visitor |
 | GET | `/api/admin/riwayat/export-all` | Export semua riwayat |
 | PUT | `/api/admin/pengaturan/password` | Ganti password admin |
+
+---
+
+## Tim Pengembang
+
+| Nama | Peran |
+|---|---|
+| Eri | Frontend Developer |
+| Reval | Frontend Developer |
+| Johan | Backend Developer |
+| Rega | Backend Developer |
+
+---
+
+## Lisensi
+
+Proyek ini dilisensikan di bawah **MIT License** — bebas dipakai, disalin,
+dimodifikasi, digabung, dipublikasikan, didistribusikan, dan/atau dijual,
+selama pemberitahuan hak cipta di atas dan pemberitahuan izin ini disertakan
+di semua salinan atau bagian penting dari perangkat lunak ini.
+
+Perangkat lunak ini disediakan **"apa adanya"**, tanpa jaminan dalam bentuk
+apa pun, tersurat maupun tersirat, termasuk namun tidak terbatas pada
+jaminan kelayakan jual, kesesuaian untuk tujuan tertentu, dan tidak
+melanggar hak pihak lain.
+
+Lihat detail lengkap di file [`LICENSE`](./LICENSE).
 
 ---
 
