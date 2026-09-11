@@ -415,3 +415,5 @@ Lihat detail lengkap di file [`LICENSE`](./LICENSE).
 `magang-jogja-chatbot`. Simpan sebagai README.md di root repository, dan
 gunakan `frontend/README.md` untuk dokumentasi yang lebih spesifik ke
 frontend saja.*
+
+---
